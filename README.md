@@ -9,8 +9,9 @@ A scalable course marketplace application like Udemy where instructors can creat
 - **Database:** PostgreSQL (with Prisma ORM)
 - **Queue:** Redis + BullMQ
 - **Payment:** Stripe
-- **Storage:** S3/Supabase/Cloudinary
-- **Email:** Resend or NodeMailer
+- **Storage:** Cloudinary (Images, Videos, Documents)
+- **Email:** Resend
+- **Deployment:** Vercel (Frontend) + Railway (Backend)
 
 ## Project Structure
 
@@ -25,12 +26,24 @@ course_marketplace/
 
 ## Getting Started
 
+### Development
 1. Clone the repository
-2. Run `docker-compose up -d` to start PostgreSQL and Redis
-3. Install dependencies in both frontend and backend directories
-4. Set up environment variables
-5. Run database migrations
-6. Start development servers
+2. Run `./setup.sh` to check prerequisites and install dependencies
+3. Run `docker-compose up -d` to start PostgreSQL and Redis
+4. Set up environment variables (see `.env.example` files)
+5. Run database migrations: `cd backend && npx prisma migrate dev`
+6. Start development servers:
+   - Backend: `cd backend && npm run dev`
+   - Frontend: `cd frontend && npm run dev`
+
+### Quick Deployment
+- **Frontend**: Vercel (auto-deploys from GitHub)
+- **Backend**: Railway (auto-deploys from GitHub)
+- **Database**: PostgreSQL on Railway
+- **Cache**: Redis on Railway
+
+📖 See [QUICK_DEPLOY.md](./QUICK_DEPLOY.md) for step-by-step deployment guide
+📚 See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment information
 
 ## Features
 

@@ -23,6 +23,55 @@ services:
       - redis_data:/data
     restart: unless-stopped
 
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: course_marketplace_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - DATABASE_URL=postgresql://course_user:course_password@postgres:5432/course_marketplace
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production-123456789
+      - JWT_REFRESH_SECRET=your-super-secret-refresh-key-change-in-production-123456789
+      - JWT_REFRESH_EXPIRES_IN=7d
+      - STRIPE_SECRET_KEY=sk_test_placeholder_secret_key
+      - STRIPE_WEBHOOK_SECRET=whsec_placeholder_webhook_secret
+      - STRIPE_PUBLISHABLE_KEY=pk_test_placeholder_publishable_key
+      - SMTP_HOST=smtp.example.com
+      - SMTP_PORT=587
+      - SMTP_USER=placeholder_user
+      - SMTP_PASS=placeholder_pass
+      - FROM_EMAIL=noreply@coursemarketplace.com
+      - CLOUDINARY_CLOUD_NAME=placeholder_cloud_name
+      - CLOUDINARY_API_KEY=placeholder_api_key
+      - CLOUDINARY_API_SECRET=placeholder_api_secret
+      - FRONTEND_URL=http://localhost:3000
+      - BCRYPT_ROUNDS=12
+      - EMAIL_VERIFICATION_EXPIRES_IN=24h
+      - PASSWORD_RESET_EXPIRES_IN=1h
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: course_marketplace_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:

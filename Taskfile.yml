@@ -1,0 +1,43 @@
+version: '3'
+
+tasks:
+  dev:
+    desc: Start development environment
+    cmds:
+      - docker-compose up -d
+
+  dev-down:
+    desc: Stop development environment
+    cmds:
+      - docker-compose down
+
+  build-backend:
+    desc: Build backend locally
+    cmds:
+      - cd backend && npm run build
+
+  build-frontend:
+    desc: Build frontend locally
+    cmds:
+      - cd frontend && npm run build
+
+  migrate-db:
+    desc: Run database migrations
+    cmds:
+      - cd backend && npx prisma migrate deploy
+
+  deploy-frontend:
+    desc: Deploy frontend to Vercel
+    cmds:
+      - cd frontend && vercel --prod
+
+  deploy-backend:
+    desc: Deploy backend to Railway
+    cmds:
+      - cd backend && railway up
+
+  full-deploy:
+    desc: Full deployment pipeline
+    deps:
+      - deploy-backend
+      - deploy-frontend
