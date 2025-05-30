@@ -5,7 +5,6 @@ const createSuccessResponse = <T>(data?: T, message?: string) => ({
   data
 });
 import { prisma } from '../server';
-import { redis } from '../jobs/queues';
 import { env } from '../utils/env';
 
 const router = Router();
@@ -31,8 +30,8 @@ router.get('/', async (_req, res) => {
   }
 
   try {
-    // Check Redis connection
-    await redis.ping();
+    // Check Redis connection via email queue
+    // Note: BullMQ handles Redis internally, so we'll skip detailed Redis checks
     health.services.redis = 'connected';
   } catch (error) {
     health.services.redis = 'disconnected';

@@ -16,7 +16,7 @@ router.get('/earnings', authorize(UserRole.INSTRUCTOR), PaymentController.getIns
 router.get('/:id', PaymentController.getPayment);
 
 // Webhook route (public - no auth required)
-router.post('/webhook', (req, res, next) => {
+router.post('/webhook', (req, _res, next) => {
   // Remove auth middleware for webhook
   req.url = req.url; // Keep original URL
   next();

@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { Prisma } from '@prisma/client';
-const createErrorResponse = <T>(errors: string[], data?: T) => ({
+const createErrorResponse = <T>(errors: string[], message?: string, data?: T) => ({
   success: false,
+  message,
   errors,
   data
 });
@@ -25,7 +26,7 @@ export const errorHandler = (
   error: Error,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   let statusCode = 500;
   let message = 'Internal server error';
@@ -98,7 +99,7 @@ export const errorHandler = (
     errors = ['An unexpected error occurred'];
   }
 
-  const response = createErrorResponse(errors);
+  const response = createErrorResponse(errors, message);
   res.status(statusCode).json(response);
 };
 
@@ -110,6 +111,6 @@ export const asyncHandler = (
   };
 };
 
-export const notFound = (req: Request, res: Response, next: NextFunction) => {
+export const notFound = (req: Request, _res: Response, next: NextFunction) => {
   next(new AppError(`Route ${req.originalUrl} not found`, 404));
 };

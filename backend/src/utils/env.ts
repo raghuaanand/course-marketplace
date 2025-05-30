@@ -40,12 +40,6 @@ const envSchema = z.object({
   CLOUDINARY_API_KEY: z.string(),
   CLOUDINARY_API_SECRET: z.string(),
   
-  // AWS S3 (optional)
-  AWS_ACCESS_KEY_ID: z.string().optional(),
-  AWS_SECRET_ACCESS_KEY: z.string().optional(),
-  AWS_S3_BUCKET: z.string().optional(),
-  AWS_REGION: z.string().optional(),
-  
   // Frontend URL
   FRONTEND_URL: z.string().url(),
   
