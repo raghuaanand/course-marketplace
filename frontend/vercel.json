@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "name": "course-marketplace-frontend",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "@next_public_api_url",
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@next_public_stripe_publishable_key",
+    "NEXT_PUBLIC_APP_NAME": "Course Marketplace"
+  },
+  "regions": ["bom1"],
+  "framework": "nextjs"
+}
