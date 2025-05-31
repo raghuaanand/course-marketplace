@@ -1,0 +1,24 @@
+[variables]
+NODE_VERSION = "18"
+
+[providers]
+nodejs = {}
+
+[phases.install]
+cmds = [
+  'cd shared && npm install && npm run build',
+  'cd backend && npm install && npx prisma generate'
+]
+
+[phases.build]
+cmds = [
+  'cd backend && npm run build'
+]
+
+[phases.deploy]
+cmds = [
+  'cd backend && npx prisma migrate deploy'
+]
+
+[start]
+cmd = 'cd backend && npm start'
