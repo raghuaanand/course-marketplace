@@ -1,7 +1,7 @@
+providers = ["nodejs"]
+
 [variables]
 NODE_VERSION = "18"
-
-providers = ["nodejs"]
 
 [phases.install]
 cmds = [
