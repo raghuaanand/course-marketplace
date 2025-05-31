@@ -1,0 +1,21 @@
+{
+  "name": "course-marketplace",
+  "version": "1.0.0",
+  "description": "Course Marketplace - Monorepo",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend", 
+    "shared"
+  ],
+  "scripts": {
+    "build": "npm run build:shared && npm run build:backend",
+    "build:shared": "cd shared && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "start": "cd backend && npm start"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}

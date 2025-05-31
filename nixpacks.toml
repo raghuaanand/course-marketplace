@@ -1,0 +1,32 @@
+[variables]
+NODE_VERSION = "18"
+
+[phases.setup]
+dependsOn = []
+
+[phases.install-shared]
+dependsOn = ['setup']
+cmds = [
+  'cd shared && npm ci'
+]
+
+[phases.build-shared]
+dependsOn = ['install-shared']
+cmds = [
+  'cd shared && npm run build'
+]
+
+[phases.install-backend]
+dependsOn = ['build-shared']
+cmds = [
+  'cd backend && npm ci'
+]
+
+[phases.build-backend]
+dependsOn = ['install-backend']
+cmds = [
+  'cd backend && npm run build'
+]
+
+[start]
+cmd = 'cd backend && npm start'
