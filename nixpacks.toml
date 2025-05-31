@@ -3,29 +3,36 @@ NODE_VERSION = "18"
 
 [phases.setup]
 dependsOn = []
+cmds = [
+  'echo "Setting up monorepo build..."'
+]
 
 [phases.install-shared]
 dependsOn = ['setup']
 cmds = [
-  'cd shared && npm ci'
+  'cd shared',
+  'npm install'
 ]
 
 [phases.build-shared]
 dependsOn = ['install-shared']
 cmds = [
-  'cd shared && npm run build'
+  'cd shared',
+  'npm run build'
 ]
 
 [phases.install-backend]
 dependsOn = ['build-shared']
 cmds = [
-  'cd backend && npm ci'
+  'cd backend',
+  'npm install'
 ]
 
 [phases.build-backend]
 dependsOn = ['install-backend']
 cmds = [
-  'cd backend && npm run build'
+  'cd backend',
+  'npm run build'
 ]
 
 [start]
