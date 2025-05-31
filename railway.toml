@@ -4,9 +4,10 @@ source = "."
 
 [services.build]
 builder = "NIXPACKS"
+buildCommand = "npm install && npm run build"
 
 [services.deploy]
-startCommand = "cd backend && npm start"
+startCommand = "npm start"
 healthcheckPath = "/health"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
