@@ -1,51 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { signIn, getProviders } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth } from "@/hooks/useAuth";
-import { toast } from "sonner";
-
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type LoginForm = z.infer<typeof loginSchema>;
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [providers, setProviders] = useState<any>({});
   const router = useRouter();
-  const { login } = useAuth();
+  const searchParams = useSearchParams();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
-  });
+  useEffect(() => {
+    getProviders().then(setProviders);
+    if (searchParams.get("error")) {
+      setError("Invalid credentials or authentication error.");
+    }
+  }, [searchParams]);
 
-  const onSubmit = async (data: LoginForm) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
-    try {
-      await login(data.email, data.password);
-      toast.success("Welcome back!");
+    setError("");
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+    setIsLoading(false);
+    if (res?.error) {
+      setError("Invalid email or password");
+    } else if (res?.ok) {
       router.push("/dashboard");
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to login. Please try again.";
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -60,67 +54,46 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  {...register("email")}
-                  className={errors.email ? "border-red-500" : ""}
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
                 />
-                {errors.email && (
-                  <p className="text-sm text-red-600">{errors.email.message}</p>
-                )}
               </div>
-
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    {...register("password")}
-                    className={errors.password ? "border-red-500" : ""}
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
-                    )}
-                  </button>
-                </div>
-                {errors.password && (
-                  <p className="text-sm text-red-600">{errors.password.message}</p>
-                )}
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                />
               </div>
-
-              <div className="flex items-center justify-between">
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-sm text-blue-600 hover:text-blue-500"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isLoading}
-              >
+              {error && <p className="text-sm text-red-600">{error}</p>}
+              <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Sign In
               </Button>
             </form>
-
+            <div className="mt-4">
+              {providers && providers.google && (
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                >
+                  Continue with Google
+                </Button>
+              )}
+            </div>
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -132,7 +105,6 @@ export default function LoginPage() {
                   </span>
                 </div>
               </div>
-
               <div className="mt-6">
                 <Button variant="outline" className="w-full" asChild>
                   <Link href="/auth/register">

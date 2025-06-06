@@ -1,3 +1,5 @@
+// All authentication is now handled by NextAuth.js. This file is deprecated.
+
 import { User, UserRole } from '@/types';
 import { apiService } from './api';
 
@@ -31,25 +33,25 @@ export interface ResetPasswordData {
 
 class AuthService {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await apiService.post<AuthResponse>('/auth/login', credentials);
+    const response = await apiService.post<{ success: boolean; data: AuthResponse }>('/auth/login', credentials);
     
     // Store tokens in localStorage
-    localStorage.setItem('accessToken', response.accessToken);
-    localStorage.setItem('refreshToken', response.refreshToken);
-    localStorage.setItem('user', JSON.stringify(response.user));
+    localStorage.setItem('accessToken', response.data.accessToken);
+    localStorage.setItem('refreshToken', response.data.refreshToken);
+    localStorage.setItem('user', JSON.stringify(response.data.user));
     
-    return response;
+    return response.data;
   }
 
   async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await apiService.post<AuthResponse>('/auth/register', data);
+    const response = await apiService.post<{ success: boolean; data: AuthResponse }>('/auth/register', data);
     
     // Store tokens in localStorage
-    localStorage.setItem('accessToken', response.accessToken);
-    localStorage.setItem('refreshToken', response.refreshToken);
-    localStorage.setItem('user', JSON.stringify(response.user));
+    localStorage.setItem('accessToken', response.data.accessToken);
+    localStorage.setItem('refreshToken', response.data.refreshToken);
+    localStorage.setItem('user', JSON.stringify(response.data.user));
     
-    return response;
+    return response.data;
   }
 
   async logout(): Promise<void> {
@@ -82,7 +84,8 @@ class AuthService {
   }
 
   async getCurrentUser(): Promise<User> {
-    return apiService.get<User>('/auth/me');
+    const response = await apiService.get<{ success: boolean; data: User }>('/auth/me');
+    return response.data;
   }
 
   async updateProfile(data: Partial<User>): Promise<User> {

@@ -121,9 +121,9 @@ export function Header() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={user.avatar || undefined} alt={user.firstName} />
+                    <AvatarImage src={user.image || undefined} alt={user.name || user.email} />
                     <AvatarFallback>
-                      {getInitials(user.firstName, user.lastName)}
+                      {user.name ? getInitials(user.name.split(' ')[0] || '', user.name.split(' ')[1] || '') : user.email?.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
@@ -131,7 +131,7 @@ export function Header() {
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <div className="flex items-center justify-start gap-2 p-2">
                   <div className="flex flex-col space-y-1 leading-none">
-                    <p className="font-medium">{user.firstName} {user.lastName}</p>
+                    <p className="font-medium">{user.name || 'User'}</p>
                     <p className="w-[200px] truncate text-sm text-muted-foreground">
                       {user.email}
                     </p>
@@ -156,10 +156,10 @@ export function Header() {
           ) : (
             <div className="flex items-center space-x-2">
               <Button variant="ghost" asChild>
-                <Link href="/login">Sign In</Link>
+                <Link href="/auth/login">Sign In</Link>
               </Button>
               <Button asChild>
-                <Link href="/register">Sign Up</Link>
+                <Link href="/auth/register">Sign Up</Link>
               </Button>
             </div>
           )}
