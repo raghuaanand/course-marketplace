@@ -1,8 +1,0 @@
-frontend/
-.git/
-.github/
-*.md
-docker-compose.yml
-Taskfile.yml
-setup.sh
-Instructions.MD
