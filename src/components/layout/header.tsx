@@ -53,7 +53,7 @@ export function Header() {
   if (user?.role === "INSTRUCTOR") {
     userMenuItems.push(
       { href: "/instructor/dashboard", label: "Instructor Dashboard", icon: BookOpen },
-      { href: "/instructor/courses", label: "Manage Courses", icon: BookOpen }
+      { href: "/instructor/manage-courses", label: "Manage Courses", icon: BookOpen }
     );
   }
 

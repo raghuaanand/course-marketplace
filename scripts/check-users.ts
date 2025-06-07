@@ -7,7 +7,7 @@ async function checkAndCreateTestUser() {
   try {
     // Check if any users exist
     const userCount = await prisma.user.count();
-    console.log(`Found ${userCount} users in the database`);
+    // console.log(`Found ${userCount} users in the database`);
 
     if (userCount === 0) {
       console.log('Creating test user...');

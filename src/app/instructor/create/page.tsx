@@ -173,12 +173,64 @@ export default function CreateCoursePage() {
         return;
       }
 
-      // Here you would call your API to create the course
-      // await courseService.createCourse(form);
-      
+      // Find category by name
+      const categoryMap: { [key: string]: string } = {
+        "Programming": "programming",
+        "Web Development": "web-development", 
+        "Data Science": "data-science",
+        "Design": "design",
+        "Business": "business",
+        "Marketing": "marketing",
+        "Photography": "photography",
+        "Music": "music",
+        "Health & Fitness": "health-fitness",
+        "Language": "language",
+        "Lifestyle": "lifestyle"
+      };
+
+      // Get the actual category from the database
+      const categoriesResponse = await fetch('/api/categories');
+      const categoriesData = await categoriesResponse.json();
+      const selectedCategory = categoriesData.data.find((cat: any) => 
+        cat.name === form.category || cat.slug === categoryMap[form.category]
+      );
+
+      if (!selectedCategory) {
+        toast.error("Please select a valid category");
+        return;
+      }
+
+      // Prepare course data
+      const courseData = {
+        title: form.title,
+        description: form.description,
+        shortDescription: form.description.slice(0, 100) + (form.description.length > 100 ? "..." : ""),
+        categoryId: selectedCategory.id,
+        price: form.price,
+        level: form.level,
+        language: "English",
+        requirements: form.requirements,
+        whatYouWillLearn: form.learningObjectives,
+      };
+
+      // Create course
+      const response = await fetch('/api/courses/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(courseData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to create course');
+      }
+
       toast.success("Course created successfully!");
       router.push("/instructor");
-    } catch {
+    } catch (error: any) {
       toast.error("Failed to create course. Please try again.");
     } finally {
       setIsLoading(false);

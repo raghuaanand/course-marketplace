@@ -59,7 +59,7 @@ export default function ProfilePage() {
   const updateProfileMutation = useMutation({
     mutationFn: async (data: ProfileData) => {
       // TODO: Implement API call to update profile
-      console.log("Updating profile:", data);
+      // console.log("Updating profile:", data);
       await new Promise(resolve => setTimeout(resolve, 1000));
       return data;
     },

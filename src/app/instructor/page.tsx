@@ -182,7 +182,7 @@ export default function InstructorDashboard() {
                   Create your first course to start teaching and earning.
                 </p>
                 <Button asChild>
-                  <Link href="/instructor/courses/new">
+                  <Link href="/instructor/create">
                     <Plus className="h-4 w-4 mr-2" />
                     Create Your First Course
                   </Link>
@@ -290,7 +290,7 @@ export default function InstructorDashboard() {
             <CardContent>
               <div className="space-y-3">
                 <Button asChild variant="outline" className="w-full justify-start">
-                  <Link href="/instructor/courses/new">
+                  <Link href="/instructor/create">
                     <Plus className="h-4 w-4 mr-2" />
                     Create New Course
                   </Link>

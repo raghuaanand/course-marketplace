@@ -106,8 +106,8 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
         }
       });
     });
-
-    console.log(`Payment successful for course ${courseId} and student ${studentId}`);
+// 
+    // console.log(`Payment successful for course ${courseId} and student ${studentId}`);
   } catch (error) {
     console.error('Error processing successful payment:', error);
   }
