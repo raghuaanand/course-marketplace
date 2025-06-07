@@ -1,15 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
+import { getServerSession } from 'next-auth/next';
 import { UserRole } from '@prisma/client';
+import { authOptions } from '@/lib/auth-options';
 import { prisma } from '../prisma';
-import { env } from '../env';
-
-export interface JWTPayload {
-  userId: string;
-  email: string;
-  role: UserRole;
-  type: 'access' | 'refresh';
-}
 
 export interface AuthenticatedUser {
   id: string;
@@ -25,52 +18,30 @@ export class ApiError extends Error {
   }
 }
 
-export function extractToken(req: NextRequest): string | null {
-  const authHeader = req.headers.get('authorization');
+export async function getAuthenticatedUser(req: NextRequest): Promise<AuthenticatedUser> {
+  const session = await getServerSession(authOptions);
   
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    return authHeader.substring(7);
-  }
-  
-  return null;
-}
-
-export async function authenticateUser(req: NextRequest): Promise<AuthenticatedUser> {
-  const token = extractToken(req);
-  
-  if (!token) {
-    throw new ApiError('Authentication token required', 401);
+  if (!session?.user?.id) {
+    throw new ApiError('Authentication required', 401);
   }
 
-  try {
-    const decoded = jwt.verify(token, env.JWT_SECRET) as JWTPayload;
-    
-    if (decoded.type !== 'access') {
-      throw new ApiError('Invalid token type', 401);
-    }
+  // Get user details from database to ensure we have the latest data
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      id: true,
+      email: true,
+      role: true,
+      isEmailVerified: true,
+      isActive: true,
+    },
+  });
 
-    // Verify user still exists and is active
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-      select: {
-        id: true,
-        email: true,
-        role: true,
-        isEmailVerified: true,
-      },
-    });
-
-    if (!user) {
-      throw new ApiError('User not found', 401);
-    }
-
-    return user;
-  } catch (error) {
-    if (error instanceof jwt.JsonWebTokenError) {
-      throw new ApiError('Invalid authentication token', 401);
-    }
-    throw error;
+  if (!user || !user.isActive) {
+    throw new ApiError('User not found or inactive', 401);
   }
+
+  return user;
 }
 
 export function requireRole(allowedRoles: UserRole[]) {
@@ -87,8 +58,8 @@ export function requireEmailVerification(user: AuthenticatedUser) {
   }
 }
 
-// Higher-order function to wrap API routes with authentication
-export function withAuth(
+// Higher-order function to wrap API routes with NextAuth authentication
+export function withNextAuth(
   handler: (req: NextRequest, user: AuthenticatedUser) => Promise<NextResponse>,
   options: {
     roles?: UserRole[];
@@ -97,7 +68,7 @@ export function withAuth(
 ) {
   return async (req: NextRequest) => {
     try {
-      const user = await authenticateUser(req);
+      const user = await getAuthenticatedUser(req);
       
       if (options.requireVerification) {
         requireEmailVerification(user);

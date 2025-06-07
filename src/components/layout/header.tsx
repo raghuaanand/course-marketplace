@@ -17,6 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store/auth";
 import { useCartStore } from "@/store/cart";
 import { getInitials } from "@/utils/helpers";
 
@@ -24,7 +25,8 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { logout } = useAuth();
+  const { user, isAuthenticated } = useAuthStore();
   const { getTotalItems } = useCartStore();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -66,7 +68,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="pl-52 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
@@ -121,20 +123,30 @@ export function Header() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={user.image || undefined} alt={user.name || user.email} />
+                    <AvatarImage src={user.avatar || undefined} alt={`${user.firstName} ${user.lastName}`} />
                     <AvatarFallback>
-                      {user.name ? getInitials(user.name.split(' ')[0] || '', user.name.split(' ')[1] || '') : user.email?.charAt(0).toUpperCase()}
+                      {getInitials(user.firstName, user.lastName)}
                     </AvatarFallback>
                   </Avatar>
+                  {/* Role indicator badge */}
+                  <Badge 
+                    variant={user.role === 'INSTRUCTOR' ? 'default' : user.role === 'ADMIN' ? 'destructive' : 'secondary'} 
+                    className="absolute -top-1 -right-1 h-4 w-4 text-xs p-0 flex items-center justify-center"
+                  >
+                    {user.role === 'INSTRUCTOR' ? 'I' : user.role === 'ADMIN' ? 'A' : 'S'}
+                  </Badge>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <div className="flex items-center justify-start gap-2 p-2">
                   <div className="flex flex-col space-y-1 leading-none">
-                    <p className="font-medium">{user.name || 'User'}</p>
+                    <p className="font-medium">{user.firstName} {user.lastName}</p>
                     <p className="w-[200px] truncate text-sm text-muted-foreground">
                       {user.email}
                     </p>
+                    <Badge variant={user.role === 'INSTRUCTOR' ? 'default' : user.role === 'ADMIN' ? 'destructive' : 'secondary'} className="w-fit">
+                      {user.role === 'INSTRUCTOR' ? 'Instructor' : user.role === 'ADMIN' ? 'Admin' : 'Student'}
+                    </Badge>
                   </div>
                 </div>
                 <DropdownMenuSeparator />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -42,7 +42,7 @@ function CoursesPageContent() {
   const [sortBy, setSortBy] = useState("newest");
   const [priceFilter, setPriceFilter] = useState("all");
 
-  const { data: courses, isLoading, error } = useCourses({
+  const filters = useMemo(() => ({
     search: search || undefined,
     category: category !== "All" ? category : undefined,
     sortBy,
@@ -50,7 +50,9 @@ function CoursesPageContent() {
     ...(priceFilter === "0-50" && { minPrice: 0, maxPrice: 50 }),
     ...(priceFilter === "50-100" && { minPrice: 50, maxPrice: 100 }),
     ...(priceFilter === "100+" && { minPrice: 100 }),
-  });
+  }), [search, category, sortBy, priceFilter]);
+
+  const { data: courses, isLoading, error } = useCourses(filters);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

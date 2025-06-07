@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { withAuth } from '@/lib/middleware/auth';
+import { withNextAuth } from '@/lib/middleware/nextauth-middleware';
 
-export const GET = withAuth(async (req: NextRequest, user) => {
+export const GET = withNextAuth(async (req: NextRequest, user) => {
   try {
     // Get current user with additional details
     const currentUser = await prisma.user.findUnique({

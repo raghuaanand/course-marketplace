@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { ApiError, handleApiError, withAuth } from '@/lib/middleware/auth';
+import { ApiError, handleApiError, withNextAuth } from '@/lib/middleware/nextauth-middleware';
 
-export const GET = withAuth(
+export const GET = withNextAuth(
   async (req: NextRequest, user) => {
     try {
       const { searchParams } = new URL(req.url);
@@ -107,7 +107,7 @@ export const GET = withAuth(
   { roles: ['STUDENT', 'INSTRUCTOR', 'ADMIN'] }
 );
 
-export const POST = withAuth(
+export const POST = withNextAuth(
   async (req: NextRequest, user) => {
     try {
       const { courseId } = await req.json();

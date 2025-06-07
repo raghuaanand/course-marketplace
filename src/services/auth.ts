@@ -1,8 +1,11 @@
-// All authentication is now handled by NextAuth.js. This file is deprecated.
+// Authentication is now handled entirely by NextAuth.js
+// This service is only kept for API calls that still reference it
 
-import { User, UserRole } from '@/types';
+import { FrontendUser, UserRole } from '@/types';
 import { apiService } from './api';
+import { useAuthStore } from '@/store/auth';
 
+// Keeping these interfaces for backward compatibility
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -17,7 +20,7 @@ export interface RegisterData {
 }
 
 export interface AuthResponse {
-  user: User;
+  user: FrontendUser;
   accessToken: string;
   refreshToken: string;
 }
@@ -32,39 +35,22 @@ export interface ResetPasswordData {
 }
 
 class AuthService {
+  // Deprecated methods - should use NextAuth instead
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await apiService.post<{ success: boolean; data: AuthResponse }>('/auth/login', credentials);
-    
-    // Store tokens in localStorage
-    localStorage.setItem('accessToken', response.data.accessToken);
-    localStorage.setItem('refreshToken', response.data.refreshToken);
-    localStorage.setItem('user', JSON.stringify(response.data.user));
-    
-    return response.data;
+    throw new Error('Please use NextAuth login via signIn() function');
   }
 
   async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await apiService.post<{ success: boolean; data: AuthResponse }>('/auth/register', data);
-    
-    // Store tokens in localStorage
-    localStorage.setItem('accessToken', response.data.accessToken);
-    localStorage.setItem('refreshToken', response.data.refreshToken);
-    localStorage.setItem('user', JSON.stringify(response.data.user));
-    
-    return response.data;
+    throw new Error('Please use NextAuth registration');
   }
 
   async logout(): Promise<void> {
-    try {
-      await apiService.post('/auth/logout');
-    } catch {
-      // Ignore logout errors
+    // NextAuth handles logout, just clear any remaining local storage
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
     }
-    
-    // Clear local storage
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
   }
 
   async forgotPassword(data: ForgotPasswordData): Promise<{ message: string }> {
@@ -83,13 +69,13 @@ class AuthService {
     return apiService.post('/auth/resend-verification', { email });
   }
 
-  async getCurrentUser(): Promise<User> {
-    const response = await apiService.get<{ success: boolean; data: User }>('/auth/me');
+  async getCurrentUser(): Promise<FrontendUser> {
+    const response = await apiService.get<{ success: boolean; data: FrontendUser }>('/auth/me');
     return response.data;
   }
 
-  async updateProfile(data: Partial<User>): Promise<User> {
-    return apiService.patch<User>('/auth/profile', data);
+  async updateProfile(data: Partial<FrontendUser>): Promise<FrontendUser> {
+    return apiService.patch<FrontendUser>('/users/profile', data);
   }
 
   async changePassword(currentPassword: string, newPassword: string): Promise<{ message: string }> {
@@ -99,35 +85,34 @@ class AuthService {
     });
   }
 
-  // Utility methods
-  getStoredUser(): User | null {
-    const userStr = localStorage.getItem('user');
-    return userStr ? JSON.parse(userStr) : null;
+  // Utility methods - now delegate to Zustand store
+  getStoredUser(): FrontendUser | null {
+    return useAuthStore.getState().user;
   }
 
   getAccessToken(): string | null {
-    return localStorage.getItem('accessToken');
+    // No longer using JWT tokens
+    return null;
   }
 
   isAuthenticated(): boolean {
-    return !!this.getAccessToken();
+    return useAuthStore.getState().isAuthenticated;
   }
 
   hasRole(role: UserRole): boolean {
-    const user = this.getStoredUser();
-    return user?.role === role;
+    return useAuthStore.getState().hasRole(role);
   }
 
   isAdmin(): boolean {
-    return this.hasRole(UserRole.ADMIN);
+    return useAuthStore.getState().isAdmin();
   }
 
   isInstructor(): boolean {
-    return this.hasRole(UserRole.INSTRUCTOR);
+    return useAuthStore.getState().isInstructor();
   }
 
   isStudent(): boolean {
-    return this.hasRole(UserRole.STUDENT);
+    return useAuthStore.getState().isStudent();
   }
 }
 

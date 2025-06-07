@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { ApiError, handleApiError, withAuth } from '@/lib/middleware/auth';
+import { ApiError, handleApiError, withNextAuth } from '@/lib/middleware/nextauth-middleware';
 
-export const GET = withAuth(async (req: NextRequest, user) => {
+export const GET = withNextAuth(async (req: NextRequest, user) => {
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '10');

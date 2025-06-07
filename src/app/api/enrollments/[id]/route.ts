@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { ApiError, handleApiError, withAuth, AuthenticatedUser } from '@/lib/middleware/auth';
+import { ApiError, handleApiError, withNextAuth, AuthenticatedUser } from '@/lib/middleware/nextauth-middleware';
 
-export const GET = withAuth(
+export const GET = withNextAuth(
   async (req: NextRequest, user: AuthenticatedUser) => {
     try {
       // Extract enrollment ID from URL
@@ -64,7 +64,7 @@ export const GET = withAuth(
   }
 );
 
-export const PATCH = withAuth(
+export const PATCH = withNextAuth(
   async (req: NextRequest, user: AuthenticatedUser) => {
     try {
       // Extract enrollment ID from URL
@@ -119,7 +119,7 @@ export const PATCH = withAuth(
   }
 );
 
-export const DELETE = withAuth(
+export const DELETE = withNextAuth(
   async (req: NextRequest, user: AuthenticatedUser) => {
     try {
       // Extract enrollment ID from URL

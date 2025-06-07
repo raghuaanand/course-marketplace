@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Course, CourseWithDetails } from '@/types';
 import { courseService, CourseFilters, CoursesResponse } from '@/services/course';
 
@@ -10,13 +10,30 @@ export const useCourses = (filters?: CourseFilters) => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Memoize filters to prevent unnecessary re-renders
+  const memoizedFilters = useMemo(() => filters, [
+    filters?.search,
+    filters?.category,
+    filters?.instructor,
+    filters?.level,
+    filters?.language,
+    filters?.minPrice,
+    filters?.maxPrice,
+    filters?.rating,
+    filters?.status,
+    filters?.page,
+    filters?.limit,
+    filters?.sortBy,
+    filters?.sortOrder,
+  ]);
+
   const fetchCourses = useCallback(async (newFilters?: CourseFilters) => {
     setLoading(true);
     setError(null);
     
     try {
       const response: CoursesResponse = await courseService.getCourses({
-        ...filters,
+        ...memoizedFilters,
         ...newFilters,
       });
       
@@ -30,7 +47,7 @@ export const useCourses = (filters?: CourseFilters) => {
     } finally {
       setLoading(false);
     }
-  }, [filters]);
+  }, [memoizedFilters]);
 
   useEffect(() => {
     fetchCourses();

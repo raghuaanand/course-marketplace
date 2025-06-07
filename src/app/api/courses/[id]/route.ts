@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { ApiError, handleApiError } from '@/lib/middleware/auth';
+import { ApiError, handleApiError } from '@/lib/middleware/nextauth-middleware';
 
 export async function GET(
   req: NextRequest,

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { ApiError, handleApiError } from '@/lib/middleware/auth';
+import { ApiError, handleApiError } from '@/lib/middleware/nextauth-middleware';
 
 // Course listing with filtering and pagination
 export async function GET(req: NextRequest) {

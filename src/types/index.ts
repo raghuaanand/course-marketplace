@@ -279,3 +279,18 @@ export interface Notification {
   read: boolean;
   createdAt: Date;
 }
+
+// Frontend-safe user type that excludes sensitive fields
+export interface FrontendUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: UserRole;
+  avatar: string | null;
+  bio: string | null;
+  isEmailVerified: boolean;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

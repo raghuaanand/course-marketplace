@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
 import { env } from '@/lib/env';
-import { handleApiError } from '@/lib/middleware/auth';
+import { handleApiError } from '@/lib/middleware/nextauth-middleware';
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16',

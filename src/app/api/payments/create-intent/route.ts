@@ -3,7 +3,7 @@ import { z } from 'zod';
 import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
 import { env } from '@/lib/env';
-import { ApiError, handleApiError, withAuth } from '@/lib/middleware/auth';
+import { ApiError, handleApiError, withNextAuth } from '@/lib/middleware/nextauth-middleware';
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16',
@@ -13,7 +13,7 @@ const createPaymentIntentSchema = z.object({
   courseId: z.string().min(1, 'Course ID is required'),
 });
 
-export const POST = withAuth(
+export const POST = withNextAuth(
   async (req: NextRequest, user) => {
     const body = await req.json();
     const { courseId } = createPaymentIntentSchema.parse(body);

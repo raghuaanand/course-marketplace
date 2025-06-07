@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { User, UserRole } from '@/types';
+import { FrontendUser, UserRole } from '@/types';
 
 interface AuthState {
-  user: User | null;
+  user: FrontendUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   
   // Actions
-  setUser: (user: User | null) => void;
-  updateUser: (updates: Partial<User>) => void;
+  setUser: (user: FrontendUser | null) => void;
+  updateUser: (updates: Partial<FrontendUser>) => void;
   setLoading: (isLoading: boolean) => void;
   logout: () => void;
   hasRole: (role: UserRole) => boolean;

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { ApiError, handleApiError, withAuth } from '@/lib/middleware/auth';
+import { ApiError, handleApiError, withNextAuth } from '@/lib/middleware/nextauth-middleware';
 
 const updateProfileSchema = z.object({
   firstName: z.string().min(1).optional(),
@@ -10,7 +10,7 @@ const updateProfileSchema = z.object({
   avatar: z.string().url().optional(),
 });
 
-export const GET = withAuth(async (req: NextRequest, user) => {
+export const GET = withNextAuth(async (req: NextRequest, user) => {
   const profile = await prisma.user.findUnique({
     where: { id: user.id },
     select: {
@@ -42,7 +42,7 @@ export const GET = withAuth(async (req: NextRequest, user) => {
   });
 });
 
-export const PUT = withAuth(async (req: NextRequest, user) => {
+export const PUT = withNextAuth(async (req: NextRequest, user) => {
   const body = await req.json();
   const validatedData = updateProfileSchema.parse(body);
 

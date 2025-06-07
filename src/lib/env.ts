@@ -10,11 +10,6 @@ const envSchema = z.object({
   // Redis
   REDIS_URL: z.string().optional(),
   
-  // JWT
-  JWT_SECRET: z.string(),
-  JWT_REFRESH_SECRET: z.string(),
-  JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
-  
   // Stripe
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_WEBHOOK_SECRET: z.string(),
