@@ -4,85 +4,38 @@ import { hash } from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting seed...');
+  console.log(' Starting seed...');
 
   // Create categories
-  const categories = [
-    {
-      name: 'Web Development',
-      description: 'Learn modern web development technologies and frameworks',
-      slug: 'web-development'
-    },
-    {
-      name: 'Data Science',
-      description: 'Master data analysis, machine learning, and AI',
-      slug: 'data-science'
-    },
-    {
-      name: 'Mobile Development',
-      description: 'Build iOS and Android applications',
-      slug: 'mobile-development'
-    },
-    {
-      name: 'Programming',
-      description: 'Learn programming languages and computer science fundamentals',
-      slug: 'programming'
-    },
-    {
-      name: 'Design',
-      description: 'UI/UX design, graphic design, and creative tools',
-      slug: 'design'
-    },
-    {
-      name: 'Business',
-      description: 'Business strategy, entrepreneurship, and management',
-      slug: 'business'
-    },
-    {
-      name: 'Marketing',
-      description: 'Digital marketing, SEO, and social media strategies',
-      slug: 'marketing'
-    },
-    {
-      name: 'Photography',
-      description: 'Photography techniques, editing, and visual storytelling',
-      slug: 'photography'
-    },
-    {
-      name: 'Music',
-      description: 'Music theory, instruments, and audio production',
-      slug: 'music'
-    },
-    {
-      name: 'Health & Fitness',
-      description: 'Fitness training, nutrition, and wellness',
-      slug: 'health-fitness'
-    },
-    {
-      name: 'Language',
-      description: 'Learn new languages and improve communication skills',
-      slug: 'language'
-    },
-    {
-      name: 'Lifestyle',
-      description: 'Personal development, hobbies, and life skills',
-      slug: 'lifestyle'
-    }
+  const categoriesData = [
+    { name: 'Web Development', description: 'Learn modern web development technologies and frameworks', slug: 'web-development' },
+    { name: 'Data Science', description: 'Master data analysis, machine learning, and AI', slug: 'data-science' },
+    { name: 'Mobile Development', description: 'Build iOS and Android applications', slug: 'mobile-development' },
+    { name: 'Programming', description: 'Learn programming languages and computer science fundamentals', slug: 'programming' },
+    { name: 'Design', description: 'UI/UX design, graphic design, and creative tools', slug: 'design' },
+    { name: 'Business', description: 'Business strategy, entrepreneurship, and management', slug: 'business' },
+    { name: 'Marketing', description: 'Digital marketing, SEO, and social media strategies', slug: 'marketing' },
+    { name: 'Photography', description: 'Photography techniques, editing, and visual storytelling', slug: 'photography' },
+    { name: 'Music', description: 'Music theory, instruments, and audio production', slug: 'music' },
+    { name: 'Health & Fitness', description: 'Fitness training, nutrition, and wellness', slug: 'health-fitness' },
+    { name: 'Language', description: 'Learn new languages and improve communication skills', slug: 'language' },
+    { name: 'Lifestyle', description: 'Personal development, hobbies, and life skills', slug: 'lifestyle' }
   ];
 
   console.log('Creating categories...');
-  for (const category of categories) {
+  for (const category of categoriesData) {
     await prisma.category.upsert({
       where: { slug: category.slug },
       update: {},
       create: category,
     });
   }
+  const allCategories = await prisma.category.findMany();
 
   // Create sample users
   const hashedPassword = await hash('password123', 12);
 
-  const admin = await prisma.user.upsert({
+  await prisma.user.upsert({
     where: { email: 'admin@coursemarket.com' },
     update: {},
     create: {
@@ -124,278 +77,162 @@ async function main() {
       avatar: '/api/placeholder/150/150',
     },
   });
+  const instructors = [instructor1, instructor2];
 
-  const student = await prisma.user.upsert({
-    where: { email: 'student@coursemarket.com' },
-    update: {},
-    create: {
-      email: 'student@coursemarket.com',
-      firstName: 'Mike',
-      lastName: 'Student',
-      password: hashedPassword,
-      role: 'STUDENT',
-      isEmailVerified: true,
-    },
-  });
-
-  // Get categories for course creation
-  const webDevCategory = await prisma.category.findFirst({ where: { slug: 'web-development' } });
-  const dataScienceCategory = await prisma.category.findFirst({ where: { slug: 'data-science' } });
-  const programmingCategory = await prisma.category.findFirst({ where: { slug: 'programming' } });
-
-  if (!webDevCategory || !dataScienceCategory || !programmingCategory) {
-    throw new Error('Categories not found');
+  console.log('Creating students...');
+  const students = [];
+  for (let i = 1; i <= 5; i++) {
+    const student = await prisma.user.upsert({
+      where: { email: `student${i}@coursemarket.com` },
+      update: {},
+      create: {
+        email: `student${i}@coursemarket.com`,
+        firstName: `Student`,
+        lastName: `${i}`,
+        password: hashedPassword,
+        role: 'STUDENT',
+        isEmailVerified: true,
+      },
+    });
+    students.push(student);
   }
 
-  // Create sample courses
-  console.log('Creating sample courses...');
+  // Create one course per category for each instructor
+  console.log('Creating courses...');
+  const createdCourses = [];
+  for (const instructor of instructors) {
+    for (const category of allCategories) {
+      const slug = `course-${category.slug}-${instructor.firstName.toLowerCase()}`;
+      const course = await prisma.course.upsert({
+        where: { slug },
+        update: {},
+        create: {
+          title: `Complete ${category.name} Course by ${instructor.firstName}`,
+          slug,
+          description: `A comprehensive course on ${category.name} by ${instructor.firstName}.`,
+          shortDescription: `Learn ${category.name} from scratch with ${instructor.firstName}.`,
+          price: parseFloat((Math.random() * (150 - 50) + 50).toFixed(2)),
+          level: ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'][Math.floor(Math.random() * 3)],
+          language: 'English',
+          thumbnail: '/api/placeholder/800/450',
+          requirements: ['Basic knowledge of the field'],
+          whatYouWillLearn: [`Master ${category.name}`],
+          status: 'PUBLISHED',
+          instructorId: instructor.id,
+          categoryId: category.id,
+        },
+      });
+      createdCourses.push(course);
+    }
+  }
 
-  const course1 = await prisma.course.upsert({
-    where: { slug: 'complete-react-course' },
-    update: {},
-    create: {
-      title: 'Complete React Development Course',
-      slug: 'complete-react-course',
-      description: 'Master React from beginner to advanced. Learn hooks, context, routing, and modern React patterns. Build real-world projects and deploy them to production.',
-      shortDescription: 'Master React from beginner to advanced with hands-on projects',
-      price: 99.99,
-      discountPrice: 79.99,
-      level: 'INTERMEDIATE',
-      language: 'English',
-      thumbnail: '/api/placeholder/800/450',
-      requirements: ['Basic JavaScript knowledge', 'HTML and CSS fundamentals', 'Code editor installed'],
-      whatYouWillLearn: [
-        'Build modern React applications',
-        'Master React Hooks and Context API',
-        'Implement routing with React Router',
-        'Deploy React apps to production',
-        'Write clean, maintainable code'
-      ],
-      status: 'PUBLISHED',
-      instructorId: instructor1.id,
-      categoryId: webDevCategory.id,
-    },
-  });
+  // Create at least 2 enrollments for each student
+  console.log('Creating enrollments...');
+  if (createdCourses.length >= 2) {
+    for (const student of students) {
+      const enrollments = new Set<string>();
+      while (enrollments.size < 2) {
+        const courseIndex = Math.floor(Math.random() * createdCourses.length);
+        enrollments.add(createdCourses[courseIndex].id);
+      }
 
-  const course2 = await prisma.course.upsert({
-    where: { slug: 'python-data-science' },
-    update: {},
-    create: {
-      title: 'Python for Data Science and Machine Learning',
-      slug: 'python-data-science',
-      description: 'Learn Python programming for data science. Cover NumPy, Pandas, Matplotlib, and Scikit-learn. Build machine learning models and analyze real datasets.',
-      shortDescription: 'Learn Python for data science and machine learning',
-      price: 129.99,
-      discountPrice: 99.99,
-      level: 'BEGINNER',
-      language: 'English',
-      thumbnail: '/api/placeholder/800/450',
-      requirements: ['Basic programming knowledge', 'High school math', 'Computer with Python installed'],
-      whatYouWillLearn: [
-        'Python programming fundamentals',
-        'Data manipulation with Pandas',
-        'Data visualization techniques',
-        'Machine learning basics',
-        'Real-world data analysis projects'
-      ],
-      status: 'PUBLISHED',
-      instructorId: instructor2.id,
-      categoryId: dataScienceCategory.id,
-    },
-  });
+      for (const courseId of enrollments) {
+        await prisma.enrollment.upsert({
+          where: { userId_courseId: { userId: student.id, courseId: courseId } },
+          update: {},
+          create: {
+            userId: student.id,
+            courseId: courseId,
+          },
+        });
+      }
+    }
+  }
 
-  const course3 = await prisma.course.upsert({
-    where: { slug: 'javascript-mastery' },
-    update: {},
-    create: {
-      title: 'JavaScript Mastery: From Beginner to Expert',
-      slug: 'javascript-mastery',
-      description: 'Complete JavaScript course covering ES6+, async programming, DOM manipulation, and modern development practices. Perfect for beginners and intermediate developers.',
-      shortDescription: 'Complete JavaScript course from beginner to expert level',
-      price: 89.99,
-      level: 'BEGINNER',
-      language: 'English',
-      thumbnail: '/api/placeholder/800/450',
-      requirements: ['Basic computer skills', 'Text editor or IDE'],
-      whatYouWillLearn: [
-        'JavaScript fundamentals and ES6+ features',
-        'DOM manipulation and event handling',
-        'Asynchronous programming',
-        'Object-oriented programming in JS',
-        'Build interactive web applications'
-      ],
-      status: 'PUBLISHED',
-      instructorId: instructor1.id,
-      categoryId: programmingCategory.id,
-    },
-  });
-
-  // Create modules and lessons for course 1
-  console.log('Creating course modules and lessons...');
-
-  const module1 = await prisma.module.create({
-    data: {
-      title: 'React Fundamentals',
-      description: 'Learn the basics of React',
-      order: 1,
-      courseId: course1.id,
-    },
-  });
-
-  const module2 = await prisma.module.create({
-    data: {
-      title: 'Advanced React Concepts',
-      description: 'Dive deeper into React',
-      order: 2,
-      courseId: course1.id,
-    },
-  });
-
-  // Lessons for module 1
-  await prisma.lesson.createMany({
-    data: [
-      {
-        title: 'Introduction to React',
-        description: 'What is React and why use it?',
-        type: 'VIDEO',
-        content: 'Introduction to React concepts and ecosystem',
-        videoUrl: 'https://example.com/intro-react.mp4',
-        videoDuration: 1200, // 20 minutes
+  // Create modules and lessons for the first course
+  if (createdCourses.length > 0) {
+    console.log('Creating course modules and lessons for one course...');
+    const course1 = createdCourses[0];
+    const module1 = await prisma.module.create({
+      data: {
+        title: 'Module 1: Introduction',
+        description: `Introduction to ${course1.title}`,
         order: 1,
-        position: 1,
-        isFree: true,
-        moduleId: module1.id,
         courseId: course1.id,
       },
-      {
-        title: 'Setting Up Development Environment',
-        description: 'Install Node.js, npm, and create-react-app',
-        type: 'VIDEO',
-        content: 'Step by step development setup',
-        videoUrl: 'https://example.com/setup.mp4',
-        videoDuration: 900, // 15 minutes
-        order: 2,
-        position: 2,
-        isFree: true,
-        moduleId: module1.id,
-        courseId: course1.id,
-      },
-      {
-        title: 'Your First React Component',
-        description: 'Create and render your first React component',
-        type: 'VIDEO',
-        content: 'Building your first component',
-        videoUrl: 'https://example.com/first-component.mp4',
-        videoDuration: 1800, // 30 minutes
-        order: 3,
-        position: 3,
-        isFree: false,
-        moduleId: module1.id,
-        courseId: course1.id,
-      },
-      {
-        title: 'JSX Syntax and Rules',
-        description: 'Understanding JSX and its syntax rules',
-        type: 'VIDEO',
-        content: 'Deep dive into JSX',
-        videoUrl: 'https://example.com/jsx.mp4',
-        videoDuration: 1500, // 25 minutes
-        order: 4,
-        position: 4,
-        isFree: false,
-        moduleId: module1.id,
-        courseId: course1.id,
-      },
-    ],
-  });
+    });
 
-  // Lessons for module 2
-  await prisma.lesson.createMany({
-    data: [
-      {
-        title: 'React Hooks Introduction',
-        description: 'useState and useEffect hooks',
-        type: 'VIDEO',
-        content: 'Introduction to React Hooks',
-        videoUrl: 'https://example.com/hooks-intro.mp4',
-        videoDuration: 2100, // 35 minutes
-        order: 1,
-        position: 5,
-        isFree: false,
-        moduleId: module2.id,
-        courseId: course1.id,
-      },
-      {
-        title: 'Custom Hooks',
-        description: 'Creating reusable custom hooks',
-        type: 'VIDEO',
-        content: 'Building custom hooks',
-        videoUrl: 'https://example.com/custom-hooks.mp4',
-        videoDuration: 1800, // 30 minutes
-        order: 2,
-        position: 6,
-        isFree: false,
-        moduleId: module2.id,
-        courseId: course1.id,
-      },
-      {
-        title: 'Context API',
-        description: 'State management with Context API',
-        type: 'VIDEO',
-        content: 'Managing global state',
-        videoUrl: 'https://example.com/context.mp4',
-        videoDuration: 2400, // 40 minutes
-        order: 3,
-        position: 7,
-        isFree: false,
-        moduleId: module2.id,
-        courseId: course1.id,
-      },
-    ],
-  });
-
-  // Create sample enrollments
-  console.log('Creating sample enrollments...');
-  await prisma.enrollment.create({
-    data: {
-      userId: student.id,
-      courseId: course1.id,
-      status: 'ACTIVE',
-      progress: 25.5,
-    },
-  });
+    await prisma.lesson.createMany({
+      data: [
+        {
+          title: 'Lesson 1: Welcome',
+          description: 'Welcome to the course',
+          type: 'VIDEO',
+          content: 'An introduction to the course content.',
+          videoUrl: 'https://example.com/lesson1.mp4',
+          videoDuration: 300,
+          order: 1,
+          position: 1,
+          isFree: true,
+          moduleId: module1.id,
+          courseId: course1.id,
+        },
+        {
+          title: 'Lesson 2: Core Concepts',
+          description: 'Understanding the core concepts.',
+          type: 'VIDEO',
+          content: 'Diving deep into the core concepts.',
+          videoUrl: 'https://example.com/lesson2.mp4',
+          videoDuration: 900,
+          order: 2,
+          position: 2,
+          isFree: false,
+          moduleId: module1.id,
+          courseId: course1.id,
+        },
+      ],
+    });
+  }
 
   // Create sample reviews
   console.log('Creating sample reviews...');
-  await prisma.review.create({
-    data: {
-      userId: student.id,
-      courseId: course1.id,
-      rating: 5,
-      comment: 'Excellent course! Very well explained and practical examples.',
-    },
-  });
+  if (students.length > 0 && createdCourses.length >= 2) {
+    await prisma.review.upsert({
+      where: { userId_courseId: { userId: students[0].id, courseId: createdCourses[0].id } },
+      update: {},
+      create: {
+        userId: students[0].id,
+        courseId: createdCourses[0].id,
+        rating: 5,
+        comment: 'Excellent course! Very well explained and practical examples.',
+      },
+    });
 
-  await prisma.review.create({
-    data: {
-      userId: student.id,
-      courseId: course2.id,
-      rating: 4,
-      comment: 'Great content, but could use more practical exercises.',
-    },
-  });
+    await prisma.review.upsert({
+      where: { userId_courseId: { userId: students[0].id, courseId: createdCourses[1].id } },
+      update: {},
+      create: {
+        userId: students[0].id,
+        courseId: createdCourses[1].id,
+        rating: 4,
+        comment: 'Great content, but could use more practical exercises.',
+      },
+    });
+  }
 
-  console.log('✅ Seed completed successfully!');
-  console.log('\n📧 Test Accounts Created:');
-  console.log('👑 Admin: admin@coursemarket.com / password123');
-  console.log('👨‍🏫 Instructor 1: john.instructor@coursemarket.com / password123');
-  console.log('👩‍🏫 Instructor 2: sarah.instructor@coursemarket.com / password123');
-  console.log('👨‍🎓 Student: student@coursemarket.com / password123');
+  console.log('Seed completed successfully!');
+  console.log('Test Accounts Created:');
+  console.log(' Admin: admin@coursemarket.com / password123');
+  console.log(' Instructor 1: john.instructor@coursemarket.com / password123');
+  console.log(' Instructor 2: sarah.instructor@coursemarket.com / password123');
+  for (let i = 1; i <= 5; i++) {
+    console.log(` Student ${i}: student${i}@coursemarket.com / password123`);
+  }
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seed failed:', e);
+    console.error(' Seed failed:', e);
     process.exit(1);
   })
   .finally(async () => {

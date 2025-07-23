@@ -45,14 +45,16 @@ export async function GET(req: NextRequest) {
       if (maxPrice !== undefined) where.price.lte = maxPrice;
     }
 
-    const orderBy: any = {};
-    if (sortBy === 'rating') {
-      orderBy.averageRating = sortOrder;
-    } else if (sortBy === 'students') {
-      orderBy.enrollmentCount = sortOrder;
-    } else {
-      orderBy[sortBy] = sortOrder;
-    }
+    const sortOptions: { [key: string]: any } = {
+      newest: { createdAt: 'desc' },
+      oldest: { createdAt: 'asc' },
+      'price-low': { price: 'asc' },
+      'price-high': { price: 'desc' },
+      rating: { averageRating: 'desc' },
+      popular: { enrollments: { _count: 'desc' } },
+    };
+
+    const orderBy = sortOptions[sortBy] || { createdAt: 'desc' };
 
     const [courses, total] = await Promise.all([
       prisma.course.findMany({

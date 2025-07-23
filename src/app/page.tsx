@@ -15,7 +15,7 @@ export default function HomePage() {
       originalPrice: 199.99,
       rating: 4.8,
       students: 12543,
-      image: "/api/placeholder/300/200",
+      image: "https://s.udemycdn.com/career-academies/careers/full-stack-web-developer/frontend-webdev-human.png",
       category: "Development",
       duration: "52h 30m",
     },
@@ -80,7 +80,7 @@ export default function HomePage() {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+              <Button size="lg" variant="outline" className="border-white hover:bg-white text-blue-600">
                 <Link href="/become-instructor" className="flex items-center">
                   Become an Instructor
                 </Link>

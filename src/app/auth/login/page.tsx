@@ -83,6 +83,9 @@ function LoginForm() {
                 Sign In
               </Button>
             </form>
+
+            {/* google sign in */}
+
             <div className="mt-4">
               {providers && providers.google && (
                 <Button
@@ -94,6 +97,9 @@ function LoginForm() {
                 </Button>
               )}
             </div>
+
+            {/* Divider for creating account */}
+            
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">

@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 's.udemycdn.com',
+      },
+      {
+        protocol: 'https',
         hostname: '*.cloudfront.net',
       },
     ],
