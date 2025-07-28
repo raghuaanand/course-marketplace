@@ -90,7 +90,8 @@ class CourseService {
   }
 
   async getCourse(id: string): Promise<CourseWithDetails> {
-    return apiService.get<CourseWithDetails>(`/courses/${id}`);
+    const response = await apiService.get<{ success: boolean; data: CourseWithDetails }>(`/courses/${id}`);
+    return response.data;
   }
 
   async getCourseBySlug(slug: string): Promise<CourseWithDetails> {
@@ -134,7 +135,8 @@ class CourseService {
 
   // Categories
   async getCategories(): Promise<Category[]> {
-    return apiService.get<Category[]>('/categories');
+    const response = await apiService.get<{ success: boolean; data: Category[] }>('/categories');
+    return response.data;
   }
 
   async getCategory(id: string): Promise<Category> {

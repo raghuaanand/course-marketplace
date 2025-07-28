@@ -40,10 +40,10 @@ export default function CategoriesPage() {
     queryFn: () => courseService.getCategories(),
   });
 
-  const filteredCategories = categories?.filter(category =>
+  const filteredCategories = (categories && Array.isArray(categories) ? categories : []).filter(category =>
     category.name.toLowerCase().includes(search.toLowerCase()) ||
     category.description?.toLowerCase().includes(search.toLowerCase())
-  ) || [];
+  );
 
   if (isLoading) {
     return (
@@ -100,7 +100,7 @@ export default function CategoriesPage() {
                   placeholder="Search categories..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-12 py-3 text-lg bg-white dark:bg-gray-800 border-0 rounded-lg"
+                  className="pl-12 py-3 text-lg bg-white text-black dark:bg-gray-800 border-0 rounded-lg"
                 />
               </div>
             </div>
