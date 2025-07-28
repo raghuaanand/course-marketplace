@@ -156,7 +156,7 @@ export default function CourseDetailPage() {
                 <div className="relative">
                   <Image
                     src={course.thumbnail || "/api/placeholder/400/225"}
-                    alt={course.title}
+                    alt={course.title || "Course Thumbnail"}
                     width={400}
                     height={192}
                     className="w-full h-48 object-cover rounded-t-lg"

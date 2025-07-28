@@ -95,8 +95,8 @@ export default function CartPage() {
                   <CardContent className="p-6">
                     <div className="flex flex-col sm:flex-row gap-4">
                       <Image
-                        src={item.course.thumbnail || "/api/placeholder/120/80"}
-                        alt={item.course.title}
+                        src={item.course.thumbnail || "https://picsum.photos/120/80"}
+                        alt={item.course.title || "Course Thumbnail"}
                         width={128}
                         height={80}
                         className="w-full sm:w-32 h-20 object-cover rounded"

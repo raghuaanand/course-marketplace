@@ -41,7 +41,14 @@ class AuthService {
   }
 
   async register(data: RegisterData): Promise<AuthResponse> {
-    throw new Error('Please use NextAuth registration');
+    const response = await apiService.post<{ success: boolean; data: FrontendUser; message: string }>('/auth/register', data);
+    
+    // Return a compatible response format
+    return {
+      user: response.data,
+      accessToken: '', // Not used with NextAuth
+      refreshToken: '', // Not used with NextAuth
+    };
   }
 
   async logout(): Promise<void> {

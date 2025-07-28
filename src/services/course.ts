@@ -70,7 +70,23 @@ class CourseService {
       });
     }
     
-    return apiService.get<CoursesResponse>(`/courses?${params.toString()}`);
+    const response = await apiService.get<{ 
+      data: { 
+        courses: CourseWithDetails[], 
+        pagination: {
+          totalItems: number;
+          currentPage: number;
+          totalPages: number;
+        } 
+      } 
+    }>(`/courses?${params.toString()}`);
+
+    return {
+      courses: response.data.courses,
+      total: response.data.pagination.totalItems,
+      page: response.data.pagination.currentPage,
+      totalPages: response.data.pagination.totalPages,
+    };
   }
 
   async getCourse(id: string): Promise<CourseWithDetails> {
