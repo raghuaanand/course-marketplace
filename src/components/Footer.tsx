@@ -23,6 +23,16 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/categories" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  Categories
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
                 <Link href="/instructor" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   Become an Instructor
                 </Link>
