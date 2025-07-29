@@ -93,9 +93,9 @@ export function TestUserLogin() {
         <Button
           variant="outline"
           size="sm"
-          className="border-2 border-dashed border-orange-400 text-orange-600 hover:bg-orange-50 hover:border-orange-500"
+          className="border-2 border-dashed border-orange-400 text-orange-600 hover:bg-orange-50 hover:border-orange-500 animate-pulse hover:animate-none transition-all duration-300 shadow-sm hover:shadow-md"
         >
-          <TestTube className="h-4 w-4 mr-2" />
+          <TestTube className="h-4 w-4 mr-2 animate-bounce" />
           {session ? "Switch Test User" : "Test User Login"}
         </Button>
       </DialogTrigger>

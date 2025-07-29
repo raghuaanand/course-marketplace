@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+import { TestUserLogin } from "@/components/TestUserLogin";
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -44,19 +45,31 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
-            <CardDescription>
+        {/* Test User Login Button - Development Only */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="mb-6 text-center">
+            <div className="bg-white rounded-lg border border-orange-200 p-4 shadow-sm">
+              <p className="text-sm text-slate-600 mb-3">
+                <strong>Development Mode:</strong> Quick test access
+              </p>
+              <TestUserLogin />
+            </div>
+          </div>
+        )}
+        
+        <Card className="border-0 shadow-lg">
+          <CardHeader className="text-center pb-6">
+            <CardTitle className="text-2xl font-bold text-slate-900">Welcome Back</CardTitle>
+            <CardDescription className="text-slate-600">
               Sign in to your account to continue learning
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email" className="text-slate-700">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
@@ -64,10 +77,11 @@ function LoginForm() {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
+                  className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-slate-700">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -75,22 +89,26 @@ function LoginForm() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
+                  className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              {error && <p className="text-sm text-red-600">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              {error && <p className="text-sm text-red-600 bg-red-50 p-3 rounded-md">{error}</p>}
+              <Button 
+                type="submit" 
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white" 
+                disabled={isLoading}
+              >
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Sign In
               </Button>
             </form>
 
-            {/* google sign in */}
-
-            <div className="mt-4">
+            {/* Google Sign In */}
+            <div className="mt-6">
               {providers && providers.google && (
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="w-full border-slate-200 text-slate-700 hover:bg-slate-50"
                   onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
                 >
                   Continue with Google
@@ -99,20 +117,23 @@ function LoginForm() {
             </div>
 
             {/* Divider for creating account */}
-            
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
+                  <div className="w-full border-t border-slate-200" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white dark:bg-gray-900 text-gray-500">
+                  <span className="px-2 bg-white text-slate-500">
                     Don&apos;t have an account?
                   </span>
                 </div>
               </div>
               <div className="mt-6">
-                <Button variant="outline" className="w-full" asChild>
+                <Button 
+                  variant="outline" 
+                  className="w-full border-slate-200 text-slate-700 hover:bg-slate-50" 
+                  asChild
+                >
                   <Link href="/auth/register">
                     Create Account
                   </Link>

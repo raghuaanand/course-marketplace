@@ -13,6 +13,7 @@ import { Loader2 } from "lucide-react";
 import { authService } from "@/services/auth";
 import { useToast } from "@/hooks/use-toast";
 import { UserRole } from "@/types";
+import { TestUserLogin } from "@/components/TestUserLogin";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -91,20 +92,32 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
-            <CardDescription>
+        {/* Test User Login Button - Development Only */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="mb-6 text-center">
+            <div className="bg-white rounded-lg border border-orange-200 p-4 shadow-sm">
+              <p className="text-sm text-slate-600 mb-3">
+                <strong>Development Mode:</strong> Quick test access
+              </p>
+              <TestUserLogin />
+            </div>
+          </div>
+        )}
+        
+        <Card className="border-0 shadow-lg">
+          <CardHeader className="text-center pb-6">
+            <CardTitle className="text-2xl font-bold text-slate-900">Create Account</CardTitle>
+            <CardDescription className="text-slate-600">
               Register to start your learning journey
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="firstName" className="text-slate-700">First Name</Label>
                   <Input
                     id="firstName"
                     type="text"
@@ -112,10 +125,11 @@ export default function RegisterPage() {
                     value={formData.firstName}
                     onChange={e => handleInputChange("firstName", e.target.value)}
                     required
+                    className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="lastName" className="text-slate-700">Last Name</Label>
                   <Input
                     id="lastName"
                     type="text"
@@ -123,11 +137,12 @@ export default function RegisterPage() {
                     value={formData.lastName}
                     onChange={e => handleInputChange("lastName", e.target.value)}
                     required
+                    className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email" className="text-slate-700">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
@@ -135,10 +150,11 @@ export default function RegisterPage() {
                   value={formData.email}
                   onChange={e => handleInputChange("email", e.target.value)}
                   required
+                  className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-slate-700">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -146,10 +162,11 @@ export default function RegisterPage() {
                   value={formData.password}
                   onChange={e => handleInputChange("password", e.target.value)}
                   required
+                  className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword" className="text-slate-700">Confirm Password</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -157,12 +174,13 @@ export default function RegisterPage() {
                   value={formData.confirmPassword}
                   onChange={e => handleInputChange("confirmPassword", e.target.value)}
                   required
+                  className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="role">I want to</Label>
+                <Label htmlFor="role" className="text-slate-700">I want to</Label>
                 <Select value={formData.role} onValueChange={(value) => handleInputChange("role", value)}>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-slate-200 focus:border-blue-500 focus:ring-blue-500">
                     <SelectValue placeholder="Select your role" />
                   </SelectTrigger>
                   <SelectContent>
@@ -171,8 +189,12 @@ export default function RegisterPage() {
                   </SelectContent>
                 </Select>
               </div>
-              {error && <p className="text-sm text-red-600">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              {error && <p className="text-sm text-red-600 bg-red-50 p-3 rounded-md">{error}</p>}
+              <Button 
+                type="submit" 
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white" 
+                disabled={isLoading}
+              >
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Create Account
               </Button>
@@ -181,10 +203,10 @@ export default function RegisterPage() {
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
+                  <div className="w-full border-t border-slate-200" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white dark:bg-gray-900 text-gray-500">
+                  <span className="px-2 bg-white text-slate-500">
                     Or continue with
                   </span>
                 </div>
@@ -193,7 +215,7 @@ export default function RegisterPage() {
                 {providers && providers.google && (
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full border-slate-200 text-slate-700 hover:bg-slate-50"
                     onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
                   >
                     Continue with Google
@@ -205,16 +227,20 @@ export default function RegisterPage() {
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
+                  <div className="w-full border-t border-slate-200" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white dark:bg-gray-900 text-gray-500">
+                  <span className="px-2 bg-white text-slate-500">
                     Already have an account?
                   </span>
                 </div>
               </div>
               <div className="mt-6">
-                <Button variant="outline" className="w-full" asChild>
+                <Button 
+                  variant="outline" 
+                  className="w-full border-slate-200 text-slate-700 hover:bg-slate-50" 
+                  asChild
+                >
                   <Link href="/auth/login">
                     Sign In
                   </Link>

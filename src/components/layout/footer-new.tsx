@@ -84,38 +84,31 @@ function FAQAccordion() {
       {faqData.map((faq, index) => (
         <motion.div
           key={index}
-          className="border border-[#E2E8F0] rounded-lg overflow-hidden"
+          className="border border-slate-200 rounded-lg overflow-hidden"
           initial={false}
         >
           <button
-            className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#3A86FF] focus:ring-offset-2"
+            className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-slate-50 transition-colors duration-200"
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
-            aria-expanded={openIndex === index}
-            aria-controls={`faq-answer-${index}`}
-            id={`faq-question-${index}`}
           >
-            <span className="font-medium text-[#1E293B]">{faq.question}</span>
+            <span className="font-medium text-slate-900">{faq.question}</span>
             <motion.div
               animate={{ rotate: openIndex === index ? 180 : 0 }}
               transition={{ duration: 0.2 }}
-              aria-hidden="true"
             >
-              <ChevronDown className="h-5 w-5 text-[#64748B]" />
+              <ChevronDown className="h-5 w-5 text-slate-500" />
             </motion.div>
           </button>
           <AnimatePresence>
             {openIndex === index && (
               <motion.div
-                id={`faq-answer-${index}`}
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="overflow-hidden"
-                role="region"
-                aria-labelledby={`faq-question-${index}`}
               >
-                <div className="px-6 pb-4 text-[#64748B] leading-relaxed">
+                <div className="px-6 pb-4 text-slate-600 leading-relaxed">
                   {faq.answer}
                 </div>
               </motion.div>
@@ -139,10 +132,10 @@ function NewsletterSignup() {
   };
 
   return (
-    <div className="bg-[#3A86FF] rounded-xl p-8 text-white">
+    <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-8 text-white">
       <div className="text-center mb-6">
         <h3 className="text-2xl font-bold mb-2">Stay Updated</h3>
-        <p className="text-white/80">
+        <p className="text-blue-100">
           Get the latest course updates, industry insights, and exclusive offers delivered to your inbox.
         </p>
       </div>
@@ -153,21 +146,19 @@ function NewsletterSignup() {
           placeholder="Enter your email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:ring-2 focus:ring-white/30 focus:border-white/40"
+          className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-blue-100"
           required
-          aria-label="Email address for newsletter"
         />
         <Button 
           type="submit" 
-          className="bg-white text-[#3A86FF] hover:bg-white/90 px-8 py-2 font-semibold focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#3A86FF]"
+          className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-2 font-semibold"
           disabled={isSubmitted}
-          aria-describedby="newsletter-status"
         >
           {isSubmitted ? "Subscribed!" : "Subscribe"}
         </Button>
       </form>
       
-      <div id="newsletter-status" className="mt-4 text-sm text-white/70 text-center">
+      <div className="mt-4 text-sm text-blue-100 text-center">
         Join 50,000+ learners already subscribed. No spam, unsubscribe anytime.
       </div>
     </div>
@@ -178,9 +169,9 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-white border-t border-[#E2E8F0]">
+    <footer className="bg-white border-t border-slate-200">
       {/* FAQ Section */}
-      <section className="py-20 bg-[#F1F5F9]">
+      <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -189,10 +180,10 @@ export function Footer() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-[#1E293B] mb-6">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-6">
               Frequently Asked Questions
             </h2>
-            <p className="text-xl text-[#64748B] max-w-2xl mx-auto">
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
               Got questions? We've got answers. Find everything you need to know about CourseHub.
             </p>
           </motion.div>
@@ -218,18 +209,18 @@ export function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center space-x-2 mb-6">
-              <div className="w-8 h-8 bg-[#3A86FF] rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <BookOpen className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-[#1E293B]">CourseHub</span>
+              <span className="text-xl font-bold text-slate-900">CourseHub</span>
             </Link>
-            <p className="text-[#64748B] mb-6 leading-relaxed">
+            <p className="text-slate-600 mb-6 leading-relaxed">
               Empowering millions to learn, grow, and succeed with world-class online education. 
               Transform your future with our expert-led courses.
             </p>
             
             {/* Contact Info */}
-            <div className="space-y-3 text-sm text-[#64748B]">
+            <div className="space-y-3 text-sm text-slate-600">
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4" />
                 <span>San Francisco, CA 94105</span>
@@ -247,13 +238,13 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-[#1E293B] mb-6">Company</h3>
+            <h3 className="font-semibold text-slate-900 mb-6">Company</h3>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link 
                     href={link.href}
-                    className="text-[#64748B] hover:text-[#3A86FF] transition-colors duration-200"
+                    className="text-slate-600 hover:text-blue-600 transition-colors duration-200"
                   >
                     {link.name}
                   </Link>
@@ -264,13 +255,13 @@ export function Footer() {
 
           {/* Learning Paths */}
           <div>
-            <h3 className="font-semibold text-[#1E293B] mb-6">Learning Paths</h3>
+            <h3 className="font-semibold text-slate-900 mb-6">Learning Paths</h3>
             <ul className="space-y-3">
               {learningPaths.map((path) => (
                 <li key={path.name}>
                   <Link 
                     href={path.href}
-                    className="text-[#64748B] hover:text-[#3A86FF] transition-colors duration-200"
+                    className="text-slate-600 hover:text-blue-600 transition-colors duration-200"
                   >
                     {path.name}
                   </Link>
@@ -281,13 +272,13 @@ export function Footer() {
 
           {/* Resources */}
           <div>
-            <h3 className="font-semibold text-[#1E293B] mb-6">Resources</h3>
+            <h3 className="font-semibold text-slate-900 mb-6">Resources</h3>
             <ul className="space-y-3 mb-6">
               {resources.map((resource) => (
                 <li key={resource.name}>
                   <Link 
                     href={resource.href}
-                    className="text-[#64748B] hover:text-[#3A86FF] transition-colors duration-200"
+                    className="text-slate-600 hover:text-blue-600 transition-colors duration-200"
                   >
                     {resource.name}
                   </Link>
@@ -297,15 +288,15 @@ export function Footer() {
 
             {/* Trust Badges */}
             <div className="space-y-2">
-              <Badge variant="outline" className="bg-[#FFBE0B]/10 text-[#FFBE0B] border-[#FFBE0B]/30">
+              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                 <Award className="h-3 w-3 mr-1" />
                 Industry Certified
               </Badge>
-              <Badge variant="outline" className="bg-[#3A86FF]/10 text-[#3A86FF] border-[#3A86FF]/30">
+              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                 <Star className="h-3 w-3 mr-1" />
                 4.9/5 Rating
               </Badge>
-              <Badge variant="outline" className="bg-[#8338EC]/10 text-[#8338EC] border-[#8338EC]/30">
+              <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
                 <Users className="h-3 w-3 mr-1" />
                 500K+ Students
               </Badge>
@@ -315,14 +306,14 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-[#E2E8F0] bg-[#F1F5F9]">
+      <div className="border-t border-slate-200 bg-slate-50">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-sm text-[#64748B]">
+            <div className="text-sm text-slate-600">
               © {currentYear} CourseHub. All rights reserved. 
-              <Link href="/privacy" className="ml-2 hover:text-[#3A86FF]">Privacy Policy</Link>
+              <Link href="/privacy" className="ml-2 hover:text-blue-600">Privacy Policy</Link>
               <span className="mx-2">•</span>
-              <Link href="/terms" className="hover:text-[#3A86FF]">Terms of Service</Link>
+              <Link href="/terms" className="hover:text-blue-600">Terms of Service</Link>
             </div>
             
             {/* Social Links */}
@@ -337,7 +328,7 @@ export function Footer() {
                 <Link
                   key={social.label}
                   href={social.href}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-[#E2E8F0] hover:bg-[#3A86FF] hover:text-white transition-all duration-200"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-200 hover:bg-blue-600 hover:text-white transition-all duration-200"
                   aria-label={social.label}
                 >
                   <social.icon className="h-4 w-4" />
@@ -350,4 +341,3 @@ export function Footer() {
     </footer>
   );
 }
-                 
