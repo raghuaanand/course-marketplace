@@ -21,9 +21,9 @@ export function TestUserLogin() {
   const { data: session } = useSession();
 
   // Only show in development environment
-  if (process.env.NODE_ENV === "production") {
-    return null;
-  }
+//   if (process.env.NODE_ENV === "production") {
+//     return null;
+//   }
 
   const testUsers = [
     {
