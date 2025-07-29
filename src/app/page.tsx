@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Users, Award, Star, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { TestUserLogin } from "@/components/TestUserLogin";
 
 export default function HomePage() {
   const featuredCourses = [
@@ -85,6 +86,9 @@ export default function HomePage() {
                   Become an Instructor
                 </Link>
               </Button>
+              <div className="sm:ml-4">
+                <TestUserLogin />
+              </div>
             </div>
           </div>
         </div>
