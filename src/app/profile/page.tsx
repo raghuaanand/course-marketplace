@@ -139,29 +139,53 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-[#F1F5F9] pt-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#3A86FF]/20 shadow-lg mb-6">
+            <CreditCard className="w-4 h-4 text-[#3A86FF] mr-2" />
+            <span className="text-sm font-medium text-[#1E293B]">Profile Settings</span>
+          </div>
+          <h1 className="text-3xl font-bold text-[#1E293B]">
             Account Settings
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-[#64748B] mt-2">
             Manage your account settings and preferences
           </p>
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="billing">Billing</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 bg-white/80 backdrop-blur-sm border-2 border-[#3A86FF]/10">
+            <TabsTrigger 
+              value="profile"
+              className="data-[state=active]:bg-[#3A86FF] data-[state=active]:text-white"
+            >
+              Profile
+            </TabsTrigger>
+            <TabsTrigger 
+              value="security"
+              className="data-[state=active]:bg-[#3A86FF] data-[state=active]:text-white"
+            >
+              Security
+            </TabsTrigger>
+            <TabsTrigger 
+              value="notifications"
+              className="data-[state=active]:bg-[#3A86FF] data-[state=active]:text-white"
+            >
+              Notifications
+            </TabsTrigger>
+            <TabsTrigger 
+              value="billing"
+              className="data-[state=active]:bg-[#3A86FF] data-[state=active]:text-white"
+            >
+              Billing
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile">
-            <Card>
+            <Card className="bg-white/80 backdrop-blur-sm border-2 border-[#3A86FF]/10">
               <CardHeader>
-                <CardTitle>Profile Information</CardTitle>
+                <CardTitle className="text-[#1E293B]">Profile Information</CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleProfileSubmit} className="space-y-6">

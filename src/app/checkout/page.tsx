@@ -57,31 +57,35 @@ export default function CheckoutPage() {
 
   if (!isAuthenticated || items.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center pt-20">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">Loading checkout...</p>
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-[#3A86FF]" />
+          <p className="text-[#64748B]">Loading checkout...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-[#F1F5F9] pt-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
+          <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#3A86FF]/20 shadow-lg mb-6">
+            <Lock className="w-4 h-4 text-[#3A86FF] mr-2" />
+            <span className="text-sm font-medium text-[#1E293B]">Secure Checkout</span>
+          </div>
           <Link
             href="/cart"
-            className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 mb-4"
+            className="inline-flex items-center text-[#64748B] hover:text-[#1E293B] mb-4 transition-colors duration-200"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Cart
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-3xl font-bold text-[#1E293B]">
             Checkout
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-[#64748B] mt-2">
             Complete your purchase to start learning
           </p>
         </div>
@@ -89,9 +93,9 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Order Summary */}
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="bg-white/80 backdrop-blur-sm border-2 border-[#3A86FF]/10">
               <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
+                <CardTitle className="text-[#1E293B]">Order Summary</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -99,7 +103,7 @@ export default function CheckoutPage() {
                     <div key={item.course.id} className="flex items-start space-x-4">
                       <div className="relative w-20 h-14 rounded-md overflow-hidden">
                         <Image
-                          src={item.course.thumbnail || "/placeholder-course.jpg"}
+                          src={item.course.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&h=200&fit=crop&q=80"}
                           alt={item.course.title}
                           fill
                           className="object-cover"

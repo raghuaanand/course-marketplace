@@ -1,9 +1,15 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { Course } from '@/types';
+import { Course, CourseWithDetails } from '@/types';
 
 export interface CartItem {
-  course: Course;
+  course: Course & {
+    instructor?: {
+      firstName: string;
+      lastName: string;
+    };
+    averageRating?: number;
+  };
   price: number;
   discountPrice?: number;
 }
@@ -12,7 +18,7 @@ interface CartState {
   items: CartItem[];
   
   // Actions
-  addToCart: (course: Course) => void;
+  addToCart: (course: Course | CourseWithDetails) => void;
   removeFromCart: (courseId: string) => void;
   clearCart: () => void;
   getTotalItems: () => number;

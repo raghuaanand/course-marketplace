@@ -49,20 +49,20 @@ export default function CourseDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center pt-20">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#3A86FF]"></div>
       </div>
     );
   }
 
   if (error || !course) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center pt-20">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-2xl font-bold text-[#1E293B] mb-4">
             Course not found
           </h1>
-          <Button onClick={() => router.push("/courses")}>
+          <Button onClick={() => router.push("/courses")} className="bg-[#3A86FF] hover:bg-[#3A86FF]/90 text-white">
             Back to Courses
           </Button>
         </div>
@@ -95,57 +95,72 @@ export default function CourseDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-[#F1F5F9] pt-20">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="bg-gradient-to-br from-[#3A86FF] via-[#8338EC] to-[#3A86FF] text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1920&h=1080&fit=crop&q=80')] bg-cover bg-center opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <div className="mb-4">
-                <Badge variant="secondary" className="bg-white/20 text-white">
+              <div className="mb-6">
+                <Badge variant="secondary" className="bg-white/20 text-white border-white/30 hover:bg-white/30 transition-colors">
                   {course.category?.name}
                 </Badge>
               </div>
               
-              <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
-              <p className="text-xl mb-6 text-gray-100">{course.description}</p>
+              <h1 className="text-5xl font-bold mb-6 leading-tight">{course.title}</h1>
+              <p className="text-xl mb-8 text-gray-100 leading-relaxed">{course.description}</p>
               
-              <div className="flex flex-wrap items-center gap-6 mb-6">
-                <div className="flex items-center">
-                  <Star className="h-5 w-5 text-yellow-400 mr-1" />
-                  <span className="font-semibold">{course.averageRating || 0}</span>
-                  <span className="text-gray-200 ml-2">({reviews.length} reviews)</span>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div className="flex items-center bg-white/10 rounded-lg p-3 backdrop-blur-sm">
+                  <Star className="h-5 w-5 text-[#FFBE0B] mr-2" />
+                  <div>
+                    <span className="font-semibold block">{course.averageRating || 0}</span>
+                    <span className="text-gray-200 text-sm">({reviews.length} reviews)</span>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <Users className="h-5 w-5 mr-1" />
-                  <span>{course._count?.enrollments || 0} students</span>
+                <div className="flex items-center bg-white/10 rounded-lg p-3 backdrop-blur-sm">
+                  <Users className="h-5 w-5 text-white mr-2" />
+                  <div>
+                    <span className="font-semibold block">{course._count?.enrollments || 0}</span>
+                    <span className="text-gray-200 text-sm">students</span>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <Clock className="h-5 w-5 mr-1" />
-                  <span>{formatDuration(totalDuration)}</span>
+                <div className="flex items-center bg-white/10 rounded-lg p-3 backdrop-blur-sm">
+                  <Clock className="h-5 w-5 text-white mr-2" />
+                  <div>
+                    <span className="font-semibold block">{formatDuration(totalDuration)}</span>
+                    <span className="text-gray-200 text-sm">duration</span>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <BookOpen className="h-5 w-5 mr-1" />
-                  <span>{totalLessons} lessons</span>
+                <div className="flex items-center bg-white/10 rounded-lg p-3 backdrop-blur-sm">
+                  <BookOpen className="h-5 w-5 text-white mr-2" />
+                  <div>
+                    <span className="font-semibold block">{totalLessons}</span>
+                    <span className="text-gray-200 text-sm">lessons</span>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <Globe className="h-5 w-5 mr-1" />
-                  <span>{course.language}</span>
+                <div className="flex items-center bg-white/10 rounded-lg p-3 backdrop-blur-sm">
+                  <Globe className="h-5 w-5 text-white mr-2" />
+                  <div>
+                    <span className="font-semibold block">{course.language}</span>
+                    <span className="text-gray-200 text-sm">language</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center">
-                <div className="relative h-10 w-10 rounded-full overflow-hidden mr-3">
+              <div className="flex items-center bg-white/10 rounded-lg p-4 backdrop-blur-sm">
+                <div className="relative h-12 w-12 rounded-full overflow-hidden mr-4">
                   <Image
-                    src={course.instructor?.avatar || "/placeholder-avatar.jpg"}
+                    src={course.instructor?.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&q=80"}
                     alt={`${course.instructor?.firstName} ${course.instructor?.lastName}`}
                     fill
                     className="object-cover"
                   />
                 </div>
                 <div>
-                  <p className="font-semibold">{course.instructor?.firstName} {course.instructor?.lastName}</p>
-                  <p className="text-gray-200 text-sm">Instructor</p>
+                  <p className="font-semibold text-lg">{course.instructor?.firstName} {course.instructor?.lastName}</p>
+                  <p className="text-gray-200">Course Instructor</p>
                 </div>
               </div>
             </div>
@@ -155,7 +170,7 @@ export default function CourseDetailPage() {
               <Card className="bg-white dark:bg-gray-800 shadow-xl">
                 <div className="relative">
                   <Image
-                    src={course.thumbnail || "/api/placeholder/400/225"}
+                    src={course.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=225&fit=crop&q=80"}
                     alt={course.title || "Course Thumbnail"}
                     width={400}
                     height={192}
@@ -343,7 +358,7 @@ export default function CourseDetailPage() {
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4">
                       <Image
-                        src={course.instructor?.avatar || "/api/placeholder/80/80"}
+                        src={course.instructor?.avatar || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&q=80"}
                         alt={`${course.instructor?.firstName} ${course.instructor?.lastName}`}
                         width={80}
                         height={80}
@@ -386,7 +401,7 @@ export default function CourseDetailPage() {
                         <div key={review.id} className="border-b pb-6 last:border-b-0">
                           <div className="flex items-start space-x-4">
                             <Image
-                              src="/api/placeholder/40/40"
+                              src="https://images.unsplash.com/photo-1494790108755-2616b612b768?w=40&h=40&fit=crop&q=80"
                               alt="User avatar"
                               width={40}
                               height={40}

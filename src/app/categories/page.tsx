@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { courseService } from "@/services/course";
+import { motion } from "framer-motion";
 
 export default function CategoriesPage() {
   const [search, setSearch] = useState("");
@@ -47,11 +48,11 @@ export default function CategoriesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen bg-[#F1F5F9]">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600 dark:text-gray-400">Loading categories...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3A86FF] mx-auto"></div>
+            <p className="mt-4 text-[#64748B]">Loading categories...</p>
           </div>
         </div>
       </div>
@@ -60,16 +61,19 @@ export default function CategoriesPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen bg-[#F1F5F9]">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-2xl font-bold text-[#1E293B] mb-4">
               Error Loading Categories
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-[#64748B] mb-6">
               Unable to load categories. Please try again later.
             </p>
-            <Button asChild>
+            <Button 
+              asChild
+              className="bg-[#3A86FF] hover:bg-[#2563EB] text-white"
+            >
               <Link href="/courses">Browse All Courses</Link>
             </Button>
           </div>
@@ -79,45 +83,90 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+    <div className="min-h-screen bg-[#F1F5F9] pt-20">
+      {/* Modern Hero Section */}
+      <section className="bg-[#1E293B] text-white py-20 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-10">
+          <motion.div
+            className="absolute top-10 left-10 w-20 h-20 bg-[#3A86FF] rounded-full"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute bottom-10 right-10 w-16 h-16 bg-[#FFBE0B] rounded-full"
+            animate={{ scale: [1.2, 1, 1.2], opacity: [0.8, 0.5, 0.8] }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute top-1/2 right-1/4 w-12 h-12 bg-[#8338EC] rounded-full"
+            animate={{ y: [-10, 10, -10] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 shadow-lg mb-8"
+            >
+              <Grid className="w-4 h-4 text-[#FFBE0B] mr-2" />
+              <span className="text-sm font-medium">Course Categories</span>
+            </motion.div>
+
+            <motion.h1 
+              className="text-4xl md:text-6xl font-bold mb-6"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
               Explore Course Categories
-            </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+            </motion.h1>
+            
+            <motion.p 
+              className="text-xl text-white/80 mb-8"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
               Discover thousands of courses across diverse topics and skill levels
-            </p>
+            </motion.p>
             
             {/* Search */}
-            <div className="max-w-2xl mx-auto">
+            <motion.div 
+              className="max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#64748B] h-5 w-5" />
                 <Input
                   type="text"
                   placeholder="Search categories..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-12 py-3 text-lg bg-white text-black dark:bg-gray-800 border-0 rounded-lg"
+                  className="pl-12 pr-4 py-4 w-full bg-white/95 backdrop-blur-sm border-white/20 text-[#1E293B] placeholder:text-[#64748B] rounded-xl shadow-lg focus:ring-2 focus:ring-[#3A86FF] focus:border-transparent transition-all duration-300"
                 />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Categories Section */}
+      {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-3xl font-bold text-[#1E293B] mb-2">
               All Categories
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              {filteredCategories.length} categories found
+            <p className="text-[#64748B]">
+              {filteredCategories.length} {filteredCategories.length === 1 ? "category" : "categories"} available
             </p>
           </div>
           
@@ -126,6 +175,7 @@ export default function CategoriesPage() {
               variant={viewMode === "grid" ? "default" : "outline"}
               size="sm"
               onClick={() => setViewMode("grid")}
+              className={viewMode === "grid" ? "bg-[#3A86FF] hover:bg-[#2563EB]" : "border-[#3A86FF] text-[#3A86FF] hover:bg-[#3A86FF] hover:text-white"}
             >
               <Grid className="h-4 w-4" />
             </Button>
@@ -133,6 +183,7 @@ export default function CategoriesPage() {
               variant={viewMode === "list" ? "default" : "outline"}
               size="sm"
               onClick={() => setViewMode("list")}
+              className={viewMode === "list" ? "bg-[#3A86FF] hover:bg-[#2563EB]" : "border-[#3A86FF] text-[#3A86FF] hover:bg-[#3A86FF] hover:text-white"}
             >
               <List className="h-4 w-4" />
             </Button>
@@ -142,114 +193,106 @@ export default function CategoriesPage() {
         {/* Categories Grid/List */}
         {filteredCategories.length === 0 ? (
           <div className="text-center py-12">
-            <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
+            <BookOpen className="h-16 w-16 text-[#8338EC]/50 mx-auto mb-4" />
+            <h3 className="text-xl font-medium text-[#1E293B] mb-2">
               No categories found
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-[#64748B] mb-6">
               Try adjusting your search terms or browse all courses
             </p>
-            <Button asChild>
+            <Button 
+              asChild
+              className="bg-[#3A86FF] hover:bg-[#2563EB] text-white"
+            >
               <Link href="/courses">Browse All Courses</Link>
             </Button>
           </div>
         ) : (
-          <div className={`grid gap-6 ${
-            viewMode === "grid" 
-              ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" 
-              : "grid-cols-1"
-          }`}>
-            {filteredCategories.map((category) => (
-              <Link
+          <div className={viewMode === "grid" 
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" 
+            : "space-y-4"
+          }>
+            {filteredCategories.map((category, index) => (
+              <motion.div
                 key={category.id}
-                href={`/courses?category=${encodeURIComponent(category.name)}`}
-                className="group"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:scale-105">
-                  {viewMode === "grid" ? (
-                    // Grid View
-                    <>
-                      <div className="relative h-48 bg-gradient-to-br from-blue-500 to-purple-600 rounded-t-lg overflow-hidden">
-                        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <BookOpen className="h-16 w-16 text-white" />
-                        </div>
-                        <Badge className="absolute top-4 right-4 bg-white text-gray-900">
+                <Card className={`group cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-[#3A86FF]/10 border-2 hover:border-[#3A86FF]/20 bg-white/80 backdrop-blur-sm ${
+                  viewMode === "list" ? "flex flex-row items-center" : ""
+                }`}>
+                  <Link href={`/courses?category=${category.slug}`}>
+                    <CardHeader className={viewMode === "list" ? "flex-1" : ""}>
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge 
+                          variant="secondary" 
+                          className="bg-[#3A86FF]/10 text-[#3A86FF] hover:bg-[#3A86FF]/20 transition-colors duration-300"
+                        >
                           {category._count?.courses || 0} courses
                         </Badge>
+                        <TrendingUp className="h-4 w-4 text-[#FFBE0B] group-hover:scale-110 transition-transform duration-300" />
                       </div>
-                      <CardHeader>
-                        <CardTitle className="group-hover:text-blue-600 transition-colors">
-                          {category.name}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                          {category.description || `Explore courses in ${category.name.toLowerCase()}`}
-                        </p>
-                        
-                        <div className="flex items-center justify-between text-sm text-gray-500">
-                          <div className="flex items-center">
-                            <Users className="h-4 w-4 mr-1" />
-                            <span>{category._count?.courses || 0} courses</span>
-                          </div>
-                          <TrendingUp className="h-4 w-4" />
+                      <CardTitle className="text-lg font-semibold text-[#1E293B] group-hover:text-[#3A86FF] transition-colors duration-300">
+                        {category.name}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className={viewMode === "list" ? "flex-1" : ""}>
+                      <p className="text-[#64748B] text-sm mb-4 line-clamp-2">
+                        {category.description || `Explore courses in ${category.name}`}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-xs text-[#64748B]">
+                          <Users className="h-3 w-3 mr-1" />
+                          <span>{category._count?.courses || 0} courses</span>
                         </div>
-                      </CardContent>
-                    </>
-                  ) : (
-                    // List View
-                    <CardContent className="p-6">
-                      <div className="flex items-center space-x-4">
-                        <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                          <BookOpen className="h-8 w-8 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors">
-                            {category.name}
-                          </h3>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">
-                            {category.description || `Explore courses in ${category.name.toLowerCase()}`}
-                          </p>
-                          <div className="flex items-center mt-2 text-sm text-gray-500">
-                            <Users className="h-4 w-4 mr-1" />
-                            <span>{category._count?.courses || 0} courses available</span>
-                          </div>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <Badge variant="secondary">
-                            {category._count?.courses || 0}
-                          </Badge>
+                        <div className="text-[#3A86FF] group-hover:translate-x-1 transition-transform duration-300">
+                          →
                         </div>
                       </div>
                     </CardContent>
-                  )}
+                  </Link>
                 </Card>
-              </Link>
+              </motion.div>
             ))}
           </div>
         )}
       </div>
 
-      {/* CTA Section */}
-      <div className="bg-gray-100 dark:bg-gray-800 py-16">
+      {/* Call to Action Section */}
+      <section className="bg-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Ready to Start Learning?
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            Join thousands of students who are already learning with our expert instructors
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild>
-              <Link href="/courses">Browse All Courses</Link>
-            </Button>
-            <Button variant="outline" size="lg" asChild>
-              <Link href="/auth/register">Sign Up for Free</Link>
-            </Button>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-3xl font-bold text-[#1E293B] mb-4">
+              Can't find what you're looking for?
+            </h3>
+            <p className="text-[#64748B] mb-8 max-w-2xl mx-auto">
+              Browse all our courses or suggest a new category. We're always expanding our offerings based on student feedback.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                asChild 
+                size="lg"
+                className="bg-[#3A86FF] hover:bg-[#2563EB] text-white px-8 py-3 hover:scale-105 transition-all duration-300"
+              >
+                <Link href="/courses">Browse All Courses</Link>
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="border-2 border-[#8338EC] text-[#8338EC] hover:bg-[#8338EC] hover:text-white px-8 py-3 transition-all duration-300"
+              >
+                Suggest a Category
+              </Button>
+            </div>
+          </motion.div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

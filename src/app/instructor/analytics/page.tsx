@@ -76,10 +76,10 @@ export default function InstructorAnalyticsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center pt-20">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading analytics...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3A86FF] mx-auto"></div>
+          <p className="mt-4 text-[#64748B]">Loading analytics...</p>
         </div>
       </div>
     );
@@ -87,13 +87,13 @@ export default function InstructorAnalyticsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center pt-20">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error loading analytics</h2>
-          <p className="text-gray-600">{error}</p>
+          <h2 className="text-2xl font-bold text-[#1E293B] mb-2">Error loading analytics</h2>
+          <p className="text-[#64748B]">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+            className="mt-4 px-4 py-2 bg-[#3A86FF] text-white rounded-md hover:bg-[#3A86FF]/90 transition-colors"
           >
             Try Again
           </button>
@@ -104,20 +104,25 @@ export default function InstructorAnalyticsPage() {
 
   if (!analyticsData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center pt-20">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">No analytics data available</h2>
-          <p className="text-gray-600">Create some courses to see your analytics</p>
+          <h2 className="text-2xl font-bold text-[#1E293B] mb-2">No analytics data available</h2>
+          <p className="text-[#64748B]">Create some courses to see your analytics</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-[#F1F5F9] py-8 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
+          <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#3A86FF]/20 shadow-lg mb-6">
+            <DollarSign className="w-4 h-4 text-[#3A86FF] mr-2" />
+            <span className="text-sm font-medium text-[#1E293B]">Analytics Dashboard</span>
+          </div>
+          <h1 className="text-3xl font-bold text-[#1E293B]">Analytics Overview</h1>
+          <p className="text-[#64748B] mt-2">Track your course performance and revenue</p>
           <p className="text-gray-600 mt-2">Track your teaching performance and earnings</p>
         </div>
 

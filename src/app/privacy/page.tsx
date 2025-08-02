@@ -2,29 +2,33 @@ import Link from 'next/link';
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-[#F1F5F9] py-16 pt-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white shadow-lg rounded-lg p-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-8">Privacy Policy</h1>
-          
-          <div className="prose prose-lg max-w-none">
-            <p className="text-gray-600 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-[#3A86FF]/10">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-4 py-2 bg-[#8338EC]/10 rounded-full border border-[#8338EC]/20 mb-6">
+              <span className="text-sm font-medium text-[#8338EC]">Legal Information</span>
+            </div>
+            <h1 className="text-4xl font-bold text-[#1E293B] mb-4">Privacy Policy</h1>
+            <p className="text-[#64748B]">
               Last updated: {new Date().toLocaleDateString()}
             </p>
-
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Introduction</h2>
-            <p className="text-gray-700 mb-4">
+          </div>
+          
+          <div className="prose prose-lg max-w-none">
+            <h2 className="text-2xl font-semibold text-[#1E293B] mt-8 mb-4">1. Introduction</h2>
+            <p className="text-[#64748B] mb-6 leading-relaxed">
               Course Marketplace (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains 
               how we collect, use, disclose, and safeguard your information when you visit our website and use our services.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Information We Collect</h2>
+            <h2 className="text-2xl font-semibold text-[#1E293B] mt-8 mb-4">2. Information We Collect</h2>
             
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">2.1 Personal Information</h3>
-            <p className="text-gray-700 mb-4">
+            <h3 className="text-xl font-semibold text-[#1E293B] mt-6 mb-3">2.1 Personal Information</h3>
+            <p className="text-[#64748B] mb-4 leading-relaxed">
               We may collect personally identifiable information that you voluntarily provide to us when you:
             </p>
-            <ul className="list-disc pl-6 mb-4 text-gray-700">
+            <ul className="list-disc pl-6 mb-6 text-[#64748B] space-y-2">
               <li>Register for an account</li>
               <li>Purchase courses</li>
               <li>Contact us for support</li>
@@ -32,11 +36,11 @@ export default function PrivacyPolicyPage() {
               <li>Create instructor profiles</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">2.2 Automatically Collected Information</h3>
-            <p className="text-gray-700 mb-4">
+            <h3 className="text-xl font-semibold text-[#1E293B] mt-6 mb-3">2.2 Automatically Collected Information</h3>
+            <p className="text-[#64748B] mb-4 leading-relaxed">
               When you visit our website, we may automatically collect certain information about your device, including:
             </p>
-            <ul className="list-disc pl-6 mb-4 text-gray-700">
+            <ul className="list-disc pl-6 mb-6 text-[#64748B] space-y-2">
               <li>IP address</li>
               <li>Browser type and version</li>
               <li>Operating system</li>
@@ -45,8 +49,8 @@ export default function PrivacyPolicyPage() {
               <li>Device identifiers</li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. How We Use Your Information</h2>
-            <p className="text-gray-700 mb-4">
+            <h2 className="text-2xl font-semibold text-[#1E293B] mt-8 mb-4">3. How We Use Your Information</h2>
+            <p className="text-[#64748B] mb-4 leading-relaxed">
               We use the information we collect to:
             </p>
             <ul className="list-disc pl-6 mb-4 text-gray-700">
@@ -134,10 +138,10 @@ export default function PrivacyPolicyPage() {
               </p>
             </div>
 
-            <div className="border-t border-gray-200 pt-6">
+            <div className="border-t border-[#3A86FF]/20 pt-8 mt-8">
               <Link
                 href="/"
-                className="inline-flex items-center text-indigo-600 hover:text-indigo-500"
+                className="inline-flex items-center text-[#3A86FF] hover:text-[#3A86FF]/80 font-medium transition-colors"
               >
                 ← Back to Home
               </Link>

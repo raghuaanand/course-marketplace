@@ -2,51 +2,55 @@ import Link from 'next/link';
 
 export default function TermsOfServicePage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-[#F1F5F9] py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white shadow-lg rounded-lg p-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-8">Terms of Service</h1>
-          
-          <div className="prose prose-lg max-w-none">
-            <p className="text-gray-600 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-2xl p-8 border border-[#3A86FF]/10">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-4 py-2 bg-[#3A86FF]/10 rounded-full border border-[#3A86FF]/20 mb-6">
+              <span className="text-sm font-medium text-[#3A86FF]">Legal Information</span>
+            </div>
+            <h1 className="text-4xl font-bold text-[#1E293B] mb-4">Terms of Service</h1>
+            <p className="text-[#64748B]">
               Last updated: {new Date().toLocaleDateString()}
             </p>
-
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Acceptance of Terms</h2>
-            <p className="text-gray-700 mb-4">
+          </div>
+          
+          <div className="prose prose-lg max-w-none">
+            <h2 className="text-2xl font-semibold text-[#1E293B] mt-8 mb-4">1. Acceptance of Terms</h2>
+            <p className="text-[#64748B] mb-6 leading-relaxed">
               By accessing and using Course Marketplace, you accept and agree to be bound by the terms and provision 
               of this agreement. If you do not agree to abide by the above, please do not use this service.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Description of Service</h2>
-            <p className="text-gray-700 mb-4">
+            <h2 className="text-2xl font-semibold text-[#1E293B] mt-8 mb-4">2. Description of Service</h2>
+            <p className="text-[#64748B] mb-6 leading-relaxed">
               Course Marketplace is an online platform that connects instructors and students. We provide a 
               marketplace where instructors can create and sell courses, and students can purchase and access 
               educational content.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. User Accounts</h2>
-            <p className="text-gray-700 mb-4">
+            <h2 className="text-2xl font-semibold text-[#1E293B] mt-8 mb-4">3. User Accounts</h2>
+            <p className="text-[#64748B] mb-4 leading-relaxed">
               To access certain features of our service, you must register for an account. You agree to:
             </p>
-            <ul className="list-disc pl-6 mb-4 text-gray-700">
+            <ul className="list-disc pl-6 mb-6 text-[#64748B] space-y-2">
               <li>Provide accurate and complete information</li>
               <li>Maintain the security of your password</li>
               <li>Update your information as necessary</li>
               <li>Accept responsibility for all activities under your account</li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">4. Course Content and Intellectual Property</h2>
-            <p className="text-gray-700 mb-4">
+            <h2 className="text-2xl font-semibold text-[#1E293B] mt-8 mb-4">4. Course Content and Intellectual Property</h2>
+            <p className="text-[#64748B] mb-4 leading-relaxed">
               Instructors retain ownership of their course content. By uploading content, instructors grant us 
               a license to host, display, and distribute the content through our platform.
             </p>
-            <p className="text-gray-700 mb-4">
+            <p className="text-[#64748B] mb-6 leading-relaxed">
               Students receive a limited, non-exclusive license to access purchased course content for personal, 
               non-commercial use only.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">5. Payments and Refunds</h2>
+            <h2 className="text-2xl font-semibold text-[#1E293B] mt-8 mb-4">5. Payments and Refunds</h2>
             <p className="text-gray-700 mb-4">
               All payments are processed securely through our payment providers. Course prices are set by 
               instructors, and we collect our service fee from each transaction.

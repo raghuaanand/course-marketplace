@@ -119,10 +119,10 @@ export default function LearnPage() {
 
   if (!isAuthenticated || courseLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading course...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3A86FF] mx-auto"></div>
+          <p className="mt-4 text-[#64748B]">Loading course...</p>
         </div>
       </div>
     );
@@ -130,10 +130,10 @@ export default function LearnPage() {
 
   if (!course || !enrollment) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-400">Course not found or not enrolled</p>
-          <Button asChild className="mt-4">
+          <p className="text-[#64748B] mb-4">Course not found or not enrolled</p>
+          <Button asChild className="bg-[#3A86FF] hover:bg-[#3A86FF]/90 text-white">
             <Link href="/courses">Browse Courses</Link>
           </Button>
         </div>
@@ -207,7 +207,7 @@ export default function LearnPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-[#F1F5F9] pt-20">
       <div className="flex h-screen">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block w-80 bg-white dark:bg-gray-800 border-r">

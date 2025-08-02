@@ -59,7 +59,7 @@ async function main() {
       role: 'INSTRUCTOR',
       isEmailVerified: true,
       bio: 'Full-stack developer with 10+ years of experience. Passionate about teaching modern web technologies.',
-      avatar: '/api/placeholder/150/150',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     },
   });
 
@@ -74,7 +74,7 @@ async function main() {
       role: 'INSTRUCTOR',
       isEmailVerified: true,
       bio: 'Data scientist and AI researcher. Love making complex topics accessible to everyone.',
-      avatar: '/api/placeholder/150/150',
+      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face',
     },
   });
   const instructors = [instructor1, instructor2];
@@ -114,7 +114,7 @@ async function main() {
           price: parseFloat((Math.random() * (150 - 50) + 50).toFixed(2)),
           level: ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'][Math.floor(Math.random() * 3)],
           language: 'English',
-          thumbnail: '/api/placeholder/800/450',
+          thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=450&fit=crop',
           requirements: ['Basic knowledge of the field'],
           whatYouWillLearn: [`Master ${category.name}`],
           status: 'PUBLISHED',

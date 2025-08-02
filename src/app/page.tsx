@@ -239,17 +239,17 @@ export default function HomePage() {
   const testimonials = [
     {
       id: 1,
-      name: "Jessica Chen",
+      name: "Himanshu Verma",
       role: "Senior Software Engineer at Meta",
       content: "CourseHub's AI-powered learning paths helped me transition from junior to senior engineer in just 8 months. The personalized approach made all the difference.",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=80&h=80&fit=crop&crop=face",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
       rating: 5,
       company: "Meta",
       achievement: "Promoted to Senior Engineer"
     },
     {
       id: 2,
-      name: "Marcus Rodriguez",
+      name: "Yash Raj",
       role: "Lead Product Designer at Spotify",
       content: "The project-based approach and mentorship program were game-changers. I built a portfolio that landed me my dream job at Spotify.",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
@@ -259,7 +259,7 @@ export default function HomePage() {
     },
     {
       id: 3,
-      name: "Emily Watson",
+      name: "Khushi Verma",
       role: "Data Scientist at Netflix",
       content: "From zero coding experience to data scientist in 10 months. The structured learning path and hands-on projects made complex concepts accessible.",
       avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",

@@ -81,7 +81,7 @@ export default function StudentsPage() {
             firstName: "Alice",
             lastName: "Johnson",
             email: "alice@example.com",
-            avatar: "/api/placeholder/40/40",
+            avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=40&h=40&fit=crop&crop=face",
             enrolledAt: "2024-01-15",
             progress: 85,
             status: "ACTIVE" as const,
@@ -96,7 +96,7 @@ export default function StudentsPage() {
             firstName: "Bob",
             lastName: "Smith",
             email: "bob@example.com",
-            avatar: "/api/placeholder/40/40",
+            avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
             enrolledAt: "2024-01-10",
             progress: 100,
             status: "COMPLETED" as const,
@@ -111,7 +111,7 @@ export default function StudentsPage() {
             firstName: "Carol",
             lastName: "Davis",
             email: "carol@example.com",
-            avatar: "/api/placeholder/40/40",
+            avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face",
             enrolledAt: "2024-01-12",
             progress: 45,
             status: "ACTIVE" as const,
@@ -163,7 +163,7 @@ export default function StudentsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen bg-[#F1F5F9] pt-20">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
@@ -175,7 +175,7 @@ export default function StudentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-[#F1F5F9] pt-20">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">

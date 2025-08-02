@@ -54,12 +54,12 @@ export default function AdminPage() {
 
   if (user?.role !== "ADMIN") {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center">
+        <Card className="w-full max-w-md bg-white/90 backdrop-blur-sm border-2 border-red-200 shadow-lg">
           <CardContent className="p-6 text-center">
             <Shield className="h-12 w-12 mx-auto mb-4 text-red-500" />
-            <h2 className="text-xl font-bold mb-2">Access Denied</h2>
-            <p className="text-gray-600">You don&apos;t have permission to access the admin panel.</p>
+            <h2 className="text-xl font-bold text-[#1E293B] mb-2">Access Denied</h2>
+            <p className="text-[#64748B]">You don&apos;t have permission to access the admin panel.</p>
           </CardContent>
         </Card>
       </div>
@@ -67,15 +67,19 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-[#F1F5F9] pt-20">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
-            <p className="text-gray-600 dark:text-gray-400">Manage your platform</p>
+            <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#3A86FF]/20 shadow-lg mb-4">
+              <Shield className="w-4 h-4 text-[#3A86FF] mr-2" />
+              <span className="text-sm font-medium text-[#1E293B]">Admin Panel</span>
+            </div>
+            <h1 className="text-3xl font-bold text-[#1E293B]">Admin Dashboard</h1>
+            <p className="text-[#64748B]">Manage your platform</p>
           </div>
-          <Button>
+          <Button className="bg-[#8338EC] hover:bg-[#7C3AED] text-white px-6 py-3 hover:scale-105 transition-all duration-300">
             <Plus className="h-4 w-4 mr-2" />
             Add New User
           </Button>
@@ -83,21 +87,25 @@ export default function AdminPage() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
+          <Card className="bg-white/80 backdrop-blur-sm border-2 border-[#3A86FF]/10 hover:border-[#3A86FF]/20 transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-[#64748B]">Total Users</CardTitle>
+              <div className="p-2 bg-[#3A86FF]/10 rounded-lg">
+                <Users className="h-4 w-4 text-[#3A86FF]" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalUsers.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">+12% from last month</p>
+              <div className="text-2xl font-bold text-[#1E293B]">{stats.totalUsers.toLocaleString()}</div>
+              <p className="text-xs text-[#FFBE0B] font-medium">+12% from last month</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/80 backdrop-blur-sm border-2 border-[#8338EC]/10 hover:border-[#8338EC]/20 transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Courses</CardTitle>
-              <BookOpen className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-[#64748B]">Total Courses</CardTitle>
+              <div className="p-2 bg-[#8338EC]/10 rounded-lg">
+                <BookOpen className="h-4 w-4 text-[#8338EC]" />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalCourses}</div>

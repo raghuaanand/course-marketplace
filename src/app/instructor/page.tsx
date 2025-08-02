@@ -61,42 +61,50 @@ export default function InstructorDashboard() {
   const getStatusColor = (status: CourseStatus) => {
     switch (status) {
       case CourseStatus.PUBLISHED:
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+        return "bg-[#FFBE0B]/10 text-[#FFBE0B] border-[#FFBE0B]/20";
       case CourseStatus.DRAFT:
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+        return "bg-[#8338EC]/10 text-[#8338EC] border-[#8338EC]/20";
       case CourseStatus.ARCHIVED:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+        return "bg-[#64748B]/10 text-[#64748B] border-[#64748B]/20";
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+        return "bg-[#64748B]/10 text-[#64748B] border-[#64748B]/20";
     }
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading dashboard...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3A86FF] mx-auto"></div>
+          <p className="mt-4 text-[#64748B]">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-[#F1F5F9] pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#3A86FF]/20 shadow-lg mb-4">
+              <BookOpen className="w-4 h-4 text-[#3A86FF] mr-2" />
+              <span className="text-sm font-medium text-[#1E293B]">Instructor Portal</span>
+            </div>
+            <h1 className="text-3xl font-bold text-[#1E293B]">
               Instructor Dashboard
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
+            <p className="text-[#64748B] mt-2">
               Welcome back, {user?.firstName}! Manage your courses and track performance.
             </p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" asChild>
+            <Button 
+              variant="outline" 
+              asChild
+              className="border-2 border-[#8338EC] text-[#8338EC] hover:bg-[#8338EC] hover:text-white transition-all duration-300"
+            >
               <Link href="/instructor/analytics">
                 <TrendingUp className="h-4 w-4 mr-2" />
                 Analytics

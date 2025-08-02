@@ -232,11 +232,11 @@ export function Footer() {
             <div className="space-y-3 text-sm text-[#64748B]">
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4" />
-                <span>San Francisco, CA 94105</span>
+                <span>Mysuru, India 570020</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+1 (555) 123-4567</span>
+                <span>+91 9876543210</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />

@@ -23,27 +23,29 @@ export default function CheckoutSuccessPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+    <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center py-16">
       <div className="max-w-md w-full mx-4">
-        <Card>
-          <CardHeader className="text-center">
-            <div className="mx-auto mb-4 w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-              <CheckCircle2 className="h-8 w-8 text-green-600" />
+        <Card className="bg-white/80 backdrop-blur-sm border-2 border-[#10B981]/20 shadow-xl">
+          <CardHeader className="text-center pb-8">
+            <div className="mx-auto mb-6 w-20 h-20 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-full flex items-center justify-center shadow-lg">
+              <CheckCircle2 className="h-10 w-10 text-white" />
             </div>
-            <CardTitle className="text-2xl">Payment Successful!</CardTitle>
-            <p className="text-gray-600 dark:text-gray-400">
+            <CardTitle className="text-3xl font-bold text-[#1E293B] mb-2">Payment Successful!</CardTitle>
+            <p className="text-[#64748B] leading-relaxed">
               Thank you for your purchase. You now have access to your courses.
             </p>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-              <div className="flex items-center space-x-3">
-                <BookOpen className="h-5 w-5 text-green-600" />
+          <CardContent className="space-y-6">
+            <div className="bg-gradient-to-r from-[#10B981]/10 to-[#059669]/10 border border-[#10B981]/20 rounded-xl p-6">
+              <div className="flex items-center space-x-4">
+                <div className="p-2 bg-[#10B981]/10 rounded-lg">
+                  <BookOpen className="h-6 w-6 text-[#10B981]" />
+                </div>
                 <div>
-                  <p className="font-medium text-green-800 dark:text-green-200">
+                  <p className="font-semibold text-[#1E293B] mb-1">
                     Courses Available
                   </p>
-                  <p className="text-sm text-green-700 dark:text-green-300">
+                  <p className="text-sm text-[#64748B]">
                     Start learning immediately
                   </p>
                 </div>
