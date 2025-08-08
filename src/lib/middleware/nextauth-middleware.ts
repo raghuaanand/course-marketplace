@@ -70,9 +70,11 @@ export function withNextAuth(
     try {
       const user = await getAuthenticatedUser(req);
       
-      if (options.requireVerification) {
-        requireEmailVerification(user);
-      }
+      // TODO: commented it for now, and then will uncomment when we have the email verification in place
+
+      // if (options.requireVerification) {
+      //   requireEmailVerification(user);
+      // }
       
       if (options.roles && options.roles.length > 0) {
         requireRole(options.roles)(user);

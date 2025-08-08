@@ -122,7 +122,7 @@ model Course {
   thumbnail       String?
   price           Decimal      @db.Decimal(10, 2)
   discountPrice   Decimal?     @db.Decimal(10, 2)
-  status          CourseStatus @default(DRAFT)
+  status          CourseStatus @default(PUBLISHED)
   level           String? // Beginner, Intermediate, Advanced
   duration        Int? // in minutes
   language        String       @default("English")
