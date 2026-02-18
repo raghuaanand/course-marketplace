@@ -8,18 +8,18 @@ async function main() {
 
   // Create categories
   const categoriesData = [
-    { name: 'Web Development', description: 'Learn modern web development technologies and frameworks', slug: 'web-development' },
-    { name: 'Data Science', description: 'Master data analysis, machine learning, and AI', slug: 'data-science' },
-    { name: 'Mobile Development', description: 'Build iOS and Android applications', slug: 'mobile-development' },
-    { name: 'Programming', description: 'Learn programming languages and computer science fundamentals', slug: 'programming' },
-    { name: 'Design', description: 'UI/UX design, graphic design, and creative tools', slug: 'design' },
-    { name: 'Business', description: 'Business strategy, entrepreneurship, and management', slug: 'business' },
-    { name: 'Marketing', description: 'Digital marketing, SEO, and social media strategies', slug: 'marketing' },
-    { name: 'Photography', description: 'Photography techniques, editing, and visual storytelling', slug: 'photography' },
-    { name: 'Music', description: 'Music theory, instruments, and audio production', slug: 'music' },
-    { name: 'Health & Fitness', description: 'Fitness training, nutrition, and wellness', slug: 'health-fitness' },
-    { name: 'Language', description: 'Learn new languages and improve communication skills', slug: 'language' },
-    { name: 'Lifestyle', description: 'Personal development, hobbies, and life skills', slug: 'lifestyle' }
+    { name: 'Web Development', description: 'Learn full-stack web development using React, Node.js, and modern frameworks', slug: 'web-development' },
+    { name: 'Data Science', description: 'Master data analytics, AI, and machine learning using Python and R', slug: 'data-science' },
+    { name: 'Mobile App Development', description: 'Build Android and iOS apps using Flutter and Kotlin', slug: 'mobile-development' },
+    { name: 'Programming', description: 'Learn programming fundamentals with C, C++, Java, and Python', slug: 'programming' },
+    { name: 'Design', description: 'UI/UX design using Figma, Adobe XD, and creative Indian case studies', slug: 'design' },
+    { name: 'Business & Entrepreneurship', description: 'Learn business strategy, Indian startup ecosystem, and management', slug: 'business' },
+    { name: 'Digital Marketing', description: 'Master SEO, Google Ads, and social media marketing for Indian audiences', slug: 'marketing' },
+    { name: 'Photography', description: 'Learn photography, editing, and storytelling with Indian cultural themes', slug: 'photography' },
+    { name: 'Music', description: 'Indian classical, Bollywood, and modern music production', slug: 'music' },
+    { name: 'Health & Fitness', description: 'Yoga, Indian nutrition, and holistic wellness practices', slug: 'health-fitness' },
+    { name: 'Language Learning', description: 'Learn Hindi, Tamil, and English communication skills', slug: 'language' },
+    { name: 'Lifestyle', description: 'Indian cooking, mindfulness, and personal development', slug: 'lifestyle' }
   ];
 
   console.log('Creating categories...');
@@ -36,12 +36,12 @@ async function main() {
   const hashedPassword = await hash('password123', 12);
 
   await prisma.user.upsert({
-    where: { email: 'admin@coursemarket.com' },
+    where: { email: 'admin@coursemarket.in' },
     update: {},
     create: {
-      email: 'admin@coursemarket.com',
-      firstName: 'Admin',
-      lastName: 'User',
+      email: 'admin@coursemarket.in',
+      firstName: 'Amit',
+      lastName: 'Verma',
       password: hashedPassword,
       role: 'ADMIN',
       isEmailVerified: true,
@@ -49,46 +49,47 @@ async function main() {
   });
 
   const instructor1 = await prisma.user.upsert({
-    where: { email: 'john.instructor@coursemarket.com' },
+    where: { email: 'raghu.instructor@coursemarket.in' },
     update: {},
     create: {
-      email: 'john.instructor@coursemarket.com',
-      firstName: 'John',
-      lastName: 'Smith',
+      email: 'raghu.instructor@coursemarket.in',
+      firstName: 'Raghu',
+      lastName: 'Anand',
       password: hashedPassword,
       role: 'INSTRUCTOR',
       isEmailVerified: true,
-      bio: 'Full-stack developer with 10+ years of experience. Passionate about teaching modern web technologies.',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+      bio: 'Full-stack developer from Bengaluru with 10+ years of experience teaching MERN stack and cloud computing.',
+      avatar: 'https://images.unsplash.com/photo-1603415526960-f7e0328b5d9d?w=150&h=150&fit=crop&crop=face',
     },
   });
 
   const instructor2 = await prisma.user.upsert({
-    where: { email: 'sarah.instructor@coursemarket.com' },
+    where: { email: 'neha.instructor@coursemarket.in' },
     update: {},
     create: {
-      email: 'sarah.instructor@coursemarket.com',
-      firstName: 'Sarah',
-      lastName: 'Johnson',
+      email: 'neha.instructor@coursemarket.in',
+      firstName: 'Neha',
+      lastName: 'Sharma',
       password: hashedPassword,
       role: 'INSTRUCTOR',
       isEmailVerified: true,
-      bio: 'Data scientist and AI researcher. Love making complex topics accessible to everyone.',
-      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face',
+      bio: 'Data scientist from Pune specializing in machine learning and AI. Loves making data science approachable for everyone.',
+      avatar: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=150&h=150&fit=crop&crop=face',
     },
   });
   const instructors = [instructor1, instructor2];
 
   console.log('Creating students...');
   const students = [];
+  const indianNames = ['Arjun', 'Priya', 'Karthik', 'Sneha', 'Ravi'];
   for (let i = 1; i <= 5; i++) {
     const student = await prisma.user.upsert({
-      where: { email: `student${i}@coursemarket.com` },
+      where: { email: `student${i}@coursemarket.in` },
       update: {},
       create: {
-        email: `student${i}@coursemarket.com`,
-        firstName: `Student`,
-        lastName: `${i}`,
+        email: `student${i}@coursemarket.in`,
+        firstName: indianNames[i - 1],
+        lastName: 'Patel',
         password: hashedPassword,
         role: 'STUDENT',
         isEmailVerified: true,
@@ -109,14 +110,14 @@ async function main() {
         create: {
           title: `Complete ${category.name} Course by ${instructor.firstName}`,
           slug,
-          description: `A comprehensive course on ${category.name} by ${instructor.firstName}.`,
-          shortDescription: `Learn ${category.name} from scratch with ${instructor.firstName}.`,
-          price: parseFloat((Math.random() * (150 - 50) + 50).toFixed(2)),
+          description: `A practical and in-depth ${category.name} course taught by ${instructor.firstName} from India.`,
+          shortDescription: `Learn ${category.name} hands-on with ${instructor.firstName}.`,
+          price: parseFloat((Math.random() * (9999 - 1999) + 1999).toFixed(2)), // INR-like pricing
           level: ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'][Math.floor(Math.random() * 3)],
           language: 'English',
           thumbnail: '/api/placeholder/800/450',
-          requirements: ['Basic knowledge of the field'],
-          whatYouWillLearn: [`Master ${category.name}`],
+          requirements: ['Basic understanding of computers'],
+          whatYouWillLearn: [`Gain mastery over ${category.name}`],
           status: 'PUBLISHED',
           instructorId: instructor.id,
           categoryId: category.id,
@@ -166,9 +167,9 @@ async function main() {
       data: [
         {
           title: 'Lesson 1: Welcome',
-          description: 'Welcome to the course',
+          description: 'Welcome to the course and meet your instructor',
           type: 'VIDEO',
-          content: 'An introduction to the course content.',
+          content: 'Overview of what you’ll learn in this course.',
           videoUrl: 'https://example.com/lesson1.mp4',
           videoDuration: 300,
           order: 1,
@@ -179,9 +180,9 @@ async function main() {
         },
         {
           title: 'Lesson 2: Core Concepts',
-          description: 'Understanding the core concepts.',
+          description: 'Understanding the key concepts step-by-step.',
           type: 'VIDEO',
-          content: 'Diving deep into the core concepts.',
+          content: 'We’ll dive into the fundamentals of the topic with real-world Indian examples.',
           videoUrl: 'https://example.com/lesson2.mp4',
           videoDuration: 900,
           order: 2,
@@ -198,35 +199,35 @@ async function main() {
   console.log('Creating sample reviews...');
   if (students.length > 0 && createdCourses.length >= 2) {
     await prisma.review.upsert({
-        where: { userId_courseId: { userId: students[0].id, courseId: createdCourses[0].id } },
-        update: {},
-        create: {
-            userId: students[0].id,
-            courseId: createdCourses[0].id,
-            rating: 5,
-            comment: 'Excellent course! Very well explained and practical examples.',
-        },
+      where: { userId_courseId: { userId: students[0].id, courseId: createdCourses[0].id } },
+      update: {},
+      create: {
+        userId: students[0].id,
+        courseId: createdCourses[0].id,
+        rating: 5,
+        comment: 'Excellent course! Very practical and relatable Indian examples.',
+      },
     });
 
     await prisma.review.upsert({
-        where: { userId_courseId: { userId: students[0].id, courseId: createdCourses[1].id } },
-        update: {},
-        create: {
-            userId: students[0].id,
-            courseId: createdCourses[1].id,
-            rating: 4,
-            comment: 'Great content, but could use more practical exercises.',
-        },
+      where: { userId_courseId: { userId: students[0].id, courseId: createdCourses[1].id } },
+      update: {},
+      create: {
+        userId: students[0].id,
+        courseId: createdCourses[1].id,
+        rating: 4,
+        comment: 'Good content, would love more Hindi explanations for beginners.',
+      },
     });
   }
 
   console.log('Seed completed successfully!');
   console.log('Test Accounts Created:');
-  console.log(' Admin: admin@coursemarket.com / password123');
-  console.log(' Instructor 1: john.instructor@coursemarket.com / password123');
-  console.log(' Instructor 2: sarah.instructor@coursemarket.com / password123');
+  console.log(' Admin: admin@coursemarket.in / password123');
+  console.log(' Instructor 1: raghu.instructor@coursemarket.in / password123');
+  console.log(' Instructor 2: neha.instructor@coursemarket.in / password123');
   for (let i = 1; i <= 5; i++) {
-    console.log(` Student ${i}: student${i}@coursemarket.com / password123`);
+    console.log(` Student ${i}: student${i}@coursemarket.in / password123`);
   }
 }
 

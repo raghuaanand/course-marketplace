@@ -37,7 +37,7 @@ export function TestUserLogin() {
     },
     {
       role: "INSTRUCTOR",
-      email: "john.instructor@coursemarket.com",
+      email: "instructor@coursemarket.com",
       password: "password123",
       name: "Test Instructor",
       description: "Access instructor features: create courses, manage students, analytics",
@@ -93,16 +93,14 @@ export function TestUserLogin() {
         <Button
           variant="outline"
           size="sm"
-          className="border-2 border-dashed border-orange-400 text-orange-600 hover:bg-orange-50 hover:border-orange-500 animate-pulse hover:animate-none transition-all duration-300 shadow-sm hover:shadow-md"
+          className=" text-orange-600 hover:bg-orange-50 hover:border-orange-500 animate-pulse hover:animate-none transition-all duration-300 shadow-sm hover:shadow-md"
         >
-          <TestTube className="h-4 w-4 mr-2 animate-bounce" />
           {session ? "Switch Test User" : "Test User Login"}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center">
-            <TestTube className="h-5 w-5 mr-2 text-orange-500" />
             Test User Login
           </DialogTitle>
           <DialogDescription>

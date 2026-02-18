@@ -46,9 +46,21 @@ export default function InstructorAnalyticsPage() {
       setError(null);
       
       try {
+        // Get token safely
+        let token = '';
+        try {
+          if (typeof window !== 'undefined' && 
+              typeof window.localStorage !== 'undefined' &&
+              typeof window.localStorage.getItem === 'function') {
+            token = window.localStorage.getItem('accessToken') || '';
+          }
+        } catch {
+          // Ignore localStorage errors
+        }
+        
         const response = await fetch(`/api/instructor/analytics?days=${dateRange}`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });

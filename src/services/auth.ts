@@ -53,10 +53,16 @@ class AuthService {
 
   async logout(): Promise<void> {
     // NextAuth handles logout, just clear any remaining local storage
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('user');
+    try {
+      if (typeof window !== 'undefined' && 
+          typeof window.localStorage !== 'undefined' &&
+          typeof window.localStorage.removeItem === 'function') {
+        window.localStorage.removeItem('accessToken');
+        window.localStorage.removeItem('refreshToken');
+        window.localStorage.removeItem('user');
+      }
+    } catch {
+      // Ignore localStorage errors
     }
   }
 

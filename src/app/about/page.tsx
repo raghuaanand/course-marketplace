@@ -12,598 +12,348 @@ import {
   Globe,
   CheckCircle,
   ArrowRight,
-  Play,
-  GraduationCap,
-  TrendingUp,
   Sparkles,
-  Rocket,
+  Zap,
   Shield,
-  Brain,
-  Zap
+  TrendingUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
 export default function AboutPage() {
-  const heroRef = useRef(null);
-  const storyRef = useRef(null);
-  const valuesRef = useRef(null);
-  const teamRef = useRef(null);
-  
-  const heroInView = useInView(heroRef, { once: true });
-  const storyInView = useInView(storyRef, { once: true });
-  const valuesInView = useInView(valuesRef, { once: true });
-  const teamInView = useInView(teamRef, { once: true });
-
   const stats = [
-    { 
-      label: "Active Students", 
-      value: "50,000+", 
-      icon: Users,
-      color: "#3A86FF",
-      description: "Learning worldwide"
-    },
-    { 
-      label: "Expert Instructors", 
-      value: "500+", 
-      icon: GraduationCap,
-      color: "#FFBE0B", 
-      description: "Industry professionals"
-    },
-    { 
-      label: "Course Categories", 
-      value: "25+", 
-      icon: BookOpen,
-      color: "#8338EC",
-      description: "Diverse subjects"
-    },
-    { 
-      label: "Student Satisfaction", 
-      value: "98%", 
-      icon: Star,
-      color: "#3A86FF",
-      description: "Excellence rating"
-    },
+    { value: "50K+", label: "Active Students", sublabel: "Learning worldwide" },
+    { value: "500+", label: "Expert Instructors", sublabel: "Industry leaders" },
+    { value: "1000+", label: "Premium Courses", sublabel: "Curated content" },
+    { value: "98%", label: "Satisfaction Rate", sublabel: "From our students" },
   ];
 
   const values = [
     {
       icon: Target,
-      title: "Quality Education",
-      description: "We're committed to providing high-quality, practical education that helps students achieve their career goals.",
-      color: "#3A86FF"
+      title: "Quality First",
+      description: "Every course is carefully curated and reviewed to ensure the highest quality learning experience.",
     },
     {
       icon: Heart,
       title: "Student Success",
-      description: "Your success is our priority. We provide comprehensive support and resources to help you excel.",
-      color: "#FFBE0B"
+      description: "Your success is our priority. We provide tools, support, and resources to help you excel.",
     },
     {
       icon: Globe,
       title: "Global Community",
-      description: "Join a worldwide community of learners and connect with peers from diverse backgrounds.",
-      color: "#8338EC"
+      description: "Join learners from around the world and build connections that transcend borders.",
     },
     {
-      icon: TrendingUp,
-      title: "Continuous Growth",
-      description: "We constantly evolve our platform and content to stay ahead of industry trends and demands.",
-      color: "#3A86FF"
-    }
+      icon: Zap,
+      title: "Always Evolving",
+      description: "We constantly update our platform and content to stay ahead of industry trends.",
+    },
   ];
 
   const team = [
     {
-      name: "Sarah Johnson",
+      name: "Priya Sharma",
       role: "CEO & Founder",
-      bio: "Former tech executive with 15+ years of experience in education technology.",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face"
+      bio: "Former tech executive with 15+ years in EdTech",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop",
     },
     {
-      name: "Michael Chen",
+      name: "Arjun Patel",
       role: "Chief Technology Officer",
-      bio: "Software architect passionate about creating scalable learning platforms.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
+      bio: "Built scalable platforms at leading tech companies",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop",
     },
     {
-      name: "Emily Rodriguez",
+      name: "Neha Gupta",
       role: "Head of Content",
-      bio: "Education specialist ensuring quality and relevance of our course content.",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face"
+      bio: "Education specialist ensuring course quality",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop",
     },
     {
-      name: "David Kim",
-      role: "Lead Instructor",
-      bio: "Industry expert with experience teaching programming and data science.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
-    }
+      name: "Rahul Kumar",
+      role: "Head of Community",
+      bio: "Passionate about connecting learners globally",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop",
+    },
   ];
 
-  const achievements = [
-    "Featured in TechCrunch's Top EdTech Platforms 2024",
-    "Winner of Best Online Learning Platform Award",
-    "Partnerships with Fortune 500 companies",
-    "99% course completion rate among active students",
-    "Available in 12+ languages worldwide"
-  ];
+  const AnimatedSection = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-100px" });
+    
+    return (
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 40 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
+        className={className}
+      >
+        {children}
+      </motion.div>
+    );
+  };
 
   return (
-    <div className="min-h-screen bg-[#F1F5F9] overflow-hidden pt-20">
-      {/* Modern Professional Hero Section */}
-      <motion.section 
-        ref={heroRef}
-        className="relative min-h-screen flex items-center justify-center bg-[#F1F5F9] overflow-hidden"
-        initial={{ opacity: 0 }}
-        animate={heroInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 1 }}
-      >
-        {/* Clean Educational Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Floating educational icons */}
-          <motion.div
-            className="absolute top-20 left-16 w-16 h-16 bg-[#3A86FF] rounded-lg opacity-15 flex items-center justify-center shadow-lg"
-            animate={{
-              y: [-10, 10, -10],
-              rotate: [0, 5, -5, 0],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <BookOpen className="w-8 h-8 text-white" />
-          </motion.div>
-          
-          <motion.div
-            className="absolute top-32 right-20 w-12 h-12 bg-[#8338EC] rounded-full opacity-20 flex items-center justify-center shadow-md"
-            animate={{
-              scale: [1, 1.2, 1],
-              rotate: [0, 180, 360],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <Brain className="w-6 h-6 text-white" />
-          </motion.div>
+    <div className="min-h-screen bg-background pt-16">
+      {/* Hero Section */}
+      <section className="relative py-24 lg:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-subtle" />
+        <div className="absolute inset-0 bg-mesh opacity-40" />
+        
+        {/* Floating Elements */}
+        <motion.div
+          animate={{ y: [-10, 10, -10] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 left-[15%] w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center"
+        >
+          <BookOpen className="w-8 h-8 text-primary/50" />
+        </motion.div>
+        <motion.div
+          animate={{ y: [10, -10, 10] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-1/4 right-[15%] w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center"
+        >
+          <Star className="w-6 h-6 text-amber-500/50" />
+        </motion.div>
 
-          <motion.div
-            className="absolute bottom-32 left-12 w-14 h-14 bg-[#FFBE0B] rotate-45 opacity-25 flex items-center justify-center shadow-lg rounded-lg"
-            animate={{
-              y: [0, -15, 0],
-              rotate: [45, 225, 405],
-            }}
-            transition={{
-              duration: 7,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
+        <div className="section-container relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl mx-auto text-center"
           >
-            <Target className="w-7 h-7 text-white -rotate-45" />
+            <Badge variant="secondary" className="mb-4 rounded-full">
+              <Sparkles className="w-3.5 h-3.5 mr-2" />
+              Transforming Education Since 2020
+            </Badge>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight mb-6">
+              Empowering learners
+              <br />
+              <span className="text-gradient">around the world</span>
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
+              We're on a mission to democratize education and make high-quality learning 
+              accessible to everyone, everywhere.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="h-12 px-8 rounded-full shadow-apple" asChild>
+                <Link href="/courses">
+                  Explore Courses
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="h-12 px-8 rounded-full" asChild>
+                <Link href="/instructor">Become an Instructor</Link>
+              </Button>
+            </div>
           </motion.div>
         </div>
+      </section>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#3A86FF]/20 shadow-lg mb-8"
-            >
-              <Sparkles className="w-4 h-4 text-[#3A86FF] mr-2" />
-              <span className="text-sm font-medium text-[#1E293B]">Transforming Education Since 2020</span>
-            </motion.div>
-
-            <motion.h1 
-              className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#1E293B] mb-6 leading-tight"
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              About Our{" "}
-              <span className="text-[#3A86FF] relative">
-                Mission
-                <motion.div
-                  className="absolute -bottom-2 left-0 right-0 h-1 bg-[#FFBE0B] rounded-full"
-                  initial={{ scaleX: 0 }}
-                  animate={heroInView ? { scaleX: 1 } : { scaleX: 0 }}
-                  transition={{ duration: 0.8, delay: 1 }}
-                />
-              </span>
-            </motion.h1>
-            
-            <motion.p 
-              className="text-lg md:text-xl text-[#64748B] mb-10 leading-relaxed max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              We're democratizing education by making high-quality learning accessible to everyone, everywhere. 
-              Join our global community of learners and transform your future.
-            </motion.p>
-            
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-            >
-              <Button 
-                size="lg" 
-                className="bg-[#3A86FF] hover:bg-[#2563EB] text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-              >
-                <Play className="mr-2 h-5 w-5" />
-                Watch Our Story
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="border-2 border-[#3A86FF] text-[#3A86FF] hover:bg-[#3A86FF] hover:text-white px-8 py-6 text-lg transition-all duration-300 hover:scale-105"
-              >
-                Join Our Community
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Modern Stats Section */}
-      <section className="py-20 bg-white relative">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      {/* Stats Section */}
+      <section className="py-16 bg-muted/30 border-y border-border/50">
+        <div className="section-container">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {stats.map((stat, index) => (
-              <motion.div 
-                key={index} 
-                className="text-center group"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <motion.div 
-                  className="flex justify-center mb-4"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <div 
-                    className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 group-hover:shadow-xl"
-                    style={{ backgroundColor: `${stat.color}15` }}
-                  >
-                    <stat.icon 
-                      className="h-8 w-8 transition-all duration-300" 
-                      style={{ color: stat.color }}
-                    />
+              <AnimatedSection key={index}>
+                <div className="text-center">
+                  <div className="text-4xl lg:text-5xl font-semibold tracking-tight mb-2">
+                    {stat.value}
                   </div>
-                </motion.div>
-                <div className="text-3xl md:text-4xl font-bold text-[#1E293B] mb-2">
-                  {stat.value}
+                  <div className="font-medium mb-1">{stat.label}</div>
+                  <div className="text-sm text-muted-foreground">{stat.sublabel}</div>
                 </div>
-                <div className="text-[#64748B] font-medium mb-1">
-                  {stat.label}
-                </div>
-                <div className="text-sm text-[#94A3B8]">
-                  {stat.description}
-                </div>
-              </motion.div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Modern Story Section */}
-      <motion.section 
-        ref={storyRef}
-        className="py-20 bg-[#F1F5F9]"
-      >
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={storyInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-                transition={{ duration: 0.8 }}
-              >
-                <h2 className="text-4xl md:text-5xl font-bold text-[#1E293B] mb-6">
-                  Our Story
-                </h2>
-                <div className="space-y-6 text-lg text-[#64748B] leading-relaxed">
-                  <p>
-                    Founded in 2020, our platform was born from a simple belief: that everyone deserves access to quality education, regardless of their location, background, or circumstances.
-                  </p>
-                  <p>
-                    What started as a small team of educators and technologists has grown into a global community of learners and instructors, united by the shared goal of continuous learning and growth.
-                  </p>
-                  <p>
-                    Today, we're proud to serve students in over 150 countries, offering courses that span from fundamental skills to cutting-edge technologies.
-                  </p>
+      {/* Story Section */}
+      <section className="section-spacing">
+        <div className="section-container">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <AnimatedSection>
+              <Badge variant="secondary" className="mb-4 rounded-full">Our Story</Badge>
+              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-6">
+                Born from a passion for learning
+              </h2>
+              <div className="space-y-4 text-muted-foreground">
+                <p>
+                  CourseHub was founded in 2020 with a simple belief: that everyone deserves 
+                  access to quality education, regardless of their location or background.
+                </p>
+                <p>
+                  What started as a small team of educators and technologists has grown 
+                  into a global community of learners and instructors, united by the 
+                  shared goal of continuous learning and growth.
+                </p>
+                <p>
+                  Today, we're proud to serve students in over 150 countries, offering 
+                  courses that span from fundamental skills to cutting-edge technologies.
+                </p>
+              </div>
+              <div className="mt-8">
+                <Button asChild className="rounded-full">
+                  <Link href="/courses">
+                    Start Learning
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection>
+              <div className="relative">
+                <div className="aspect-square rounded-3xl bg-gradient-to-br from-primary via-primary to-primary/80 p-8 lg:p-12 text-primary-foreground">
+                  <div className="h-full flex flex-col justify-center items-center text-center">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    >
+                      <Globe className="w-20 h-20 mb-6 opacity-80" />
+                    </motion.div>
+                    <div className="text-4xl font-semibold mb-2">150+</div>
+                    <div className="text-lg opacity-80">Countries Reached</div>
+                  </div>
                 </div>
-                <div className="mt-8">
-                  <Button 
-                    asChild
-                    className="bg-[#3A86FF] hover:bg-[#2563EB] text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                  >
-                    <Link href="/courses">
-                      Explore Our Courses
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </motion.div>
-              <motion.div 
-                className="relative"
-                initial={{ opacity: 0, x: 30 }}
-                animate={storyInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                <div className="relative">
-                  <div 
-                    className="aspect-square rounded-3xl p-8 text-white shadow-2xl"
-                    style={{
-                      background: `linear-gradient(135deg, #3A86FF 0%, #8338EC 100%)`
-                    }}
-                  >
-                    <div className="h-full flex flex-col justify-center text-center">
-                      <motion.div
-                        animate={{ rotate: [0, 360] }}
-                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                      >
-                        <Globe className="h-24 w-24 mx-auto mb-6 opacity-90" />
-                      </motion.div>
-                      <h3 className="text-2xl font-bold mb-4">150+ Countries</h3>
-                      <p className="text-blue-100">
-                        Students from around the world trust our platform for their learning journey
-                      </p>
+                
+                {/* Floating Cards */}
+                <motion.div
+                  animate={{ y: [-5, 5, -5] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -top-4 -right-4 p-4 bg-card rounded-2xl shadow-apple-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 text-emerald-600" />
+                    </div>
+                    <div>
+                      <div className="font-semibold">50K+</div>
+                      <div className="text-xs text-muted-foreground">Students</div>
                     </div>
                   </div>
-                  {/* Decorative elements */}
-                  <motion.div
-                    className="absolute -top-4 -right-4 w-8 h-8 bg-[#FFBE0B] rounded-full opacity-80"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                  <motion.div
-                    className="absolute -bottom-4 -left-4 w-6 h-6 bg-[#FFBE0B] rounded-full opacity-60"
-                    animate={{ scale: [1.2, 1, 1.2] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Modern Values Section */}
-      <motion.section 
-        ref={valuesRef}
-        className="py-20 bg-white"
-      >
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            animate={valuesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1E293B] mb-4">
-              Our Core Values
-            </h2>
-            <p className="text-xl text-[#64748B] max-w-3xl mx-auto leading-relaxed">
-              These principles guide everything we do and shape the learning experience we create
-            </p>
-          </motion.div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={valuesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="text-center h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white">
-                  <CardContent className="p-8">
-                    <motion.div 
-                      className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
-                      style={{ backgroundColor: `${value.color}15` }}
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <value.icon 
-                        className="h-8 w-8" 
-                        style={{ color: value.color }}
-                      />
-                    </motion.div>
-                    <h3 className="text-xl font-semibold text-[#1E293B] mb-4">
-                      {value.title}
-                    </h3>
-                    <p className="text-[#64748B] leading-relaxed">
-                      {value.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Modern Team Section */}
-      <motion.section 
-        ref={teamRef}
-        className="py-20 bg-[#F1F5F9]"
-      >
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            animate={teamInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1E293B] mb-4">
-              Meet Our Team
-            </h2>
-            <p className="text-xl text-[#64748B] max-w-3xl mx-auto leading-relaxed">
-              The passionate individuals behind our mission to transform education
-            </p>
-          </motion.div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={teamInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white">
-                  <CardContent className="p-6">
-                    <motion.div 
-                      className="relative w-32 h-32 mx-auto mb-4"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="rounded-full object-cover shadow-lg"
-                      />
-                      <div className="absolute inset-0 rounded-full ring-4 ring-[#3A86FF]/20"></div>
-                    </motion.div>
-                    <h3 className="text-xl font-semibold text-[#1E293B] mb-1">
-                      {member.name}
-                    </h3>
-                    <Badge 
-                      variant="secondary" 
-                      className="mb-3 bg-[#3A86FF]/10 text-[#3A86FF] border-0"
-                    >
-                      {member.role}
-                    </Badge>
-                    <p className="text-sm text-[#64748B] leading-relaxed">
-                      {member.bio}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Modern Achievements Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <motion.div 
-              className="text-center mb-12"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-[#1E293B] mb-4">
-                Our Achievements
-              </h2>
-              <p className="text-xl text-[#64748B] leading-relaxed">
-                Recognition and milestones that reflect our commitment to excellence
-              </p>
-            </motion.div>
-            
-            <div className="space-y-4">
-              {achievements.map((achievement, index) => (
-                <motion.div 
-                  key={index} 
-                  className="flex items-center space-x-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-[#E2E8F0]"
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <motion.div
-                    whileHover={{ scale: 1.2, rotate: 360 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <CheckCircle className="h-6 w-6 text-[#3A86FF] flex-shrink-0" />
-                  </motion.div>
-                  <span className="text-lg text-[#1E293B] font-medium">
-                    {achievement}
-                  </span>
                 </motion.div>
-              ))}
-            </div>
+              </div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
 
-      {/* Modern CTA Section */}
-      <section className="py-20 bg-[#1E293B] text-white relative overflow-hidden">
-        {/* Background decoration */}
+      {/* Values Section */}
+      <section className="section-spacing bg-muted/30">
+        <div className="section-container">
+          <AnimatedSection className="text-center mb-16">
+            <Badge variant="secondary" className="mb-4 rounded-full">Our Values</Badge>
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">
+              What drives us
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              These principles guide everything we do and shape the learning experience we create.
+            </p>
+          </AnimatedSection>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            {values.map((value, index) => (
+              <AnimatedSection key={index}>
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  className="h-full p-6 lg:p-8 bg-card rounded-2xl border border-border/50 shadow-apple"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                    <value.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-3">{value.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {value.description}
+                  </p>
+                </motion.div>
+              </AnimatedSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="section-spacing">
+        <div className="section-container">
+          <AnimatedSection className="text-center mb-16">
+            <Badge variant="secondary" className="mb-4 rounded-full">Our Team</Badge>
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">
+              Meet the people behind CourseHub
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              A passionate team dedicated to transforming education for everyone.
+            </p>
+          </AnimatedSection>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            {team.map((member, index) => (
+              <AnimatedSection key={index}>
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  className="text-center p-6 bg-card rounded-2xl border border-border/50 shadow-apple"
+                >
+                  <div className="relative w-24 h-24 mx-auto mb-4">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="rounded-2xl object-cover"
+                    />
+                  </div>
+                  <h3 className="font-semibold mb-1">{member.name}</h3>
+                  <p className="text-sm text-primary mb-2">{member.role}</p>
+                  <p className="text-xs text-muted-foreground">{member.bio}</p>
+                </motion.div>
+              </AnimatedSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="section-spacing bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <motion.div
-            className="absolute top-10 left-10 w-20 h-20 bg-[#3A86FF] rounded-full"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-            transition={{ duration: 4, repeat: Infinity }}
-          />
-          <motion.div
-            className="absolute bottom-10 right-10 w-16 h-16 bg-[#FFBE0B] rounded-full"
-            animate={{ scale: [1.2, 1, 1.2], opacity: [0.8, 0.5, 0.8] }}
-            transition={{ duration: 4, repeat: Infinity }}
-          />
-          <motion.div
-            className="absolute top-1/2 left-1/4 w-12 h-12 bg-[#8338EC] rounded-full"
-            animate={{ y: [-10, 10, -10] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,white_0%,transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,white_0%,transparent_50%)]" />
         </div>
 
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Start Your Learning Journey?
+        <div className="section-container relative z-10">
+          <AnimatedSection className="text-center max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-6">
+              Ready to start learning?
             </h2>
-            <p className="text-xl text-[#94A3B8] mb-8 max-w-3xl mx-auto leading-relaxed">
-              Join thousands of students who have transformed their careers with our courses
+            <p className="text-lg opacity-80 mb-10">
+              Join over 50,000 learners and unlock your potential with world-class courses.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
-                className="bg-[#3A86FF] hover:bg-[#2563EB] text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                variant="secondary"
+                className="h-12 px-8 rounded-full shadow-lg"
                 asChild
               >
-                <Link href="/courses">
-                  <BookOpen className="mr-2 h-5 w-5" />
-                  Browse Courses
+                <Link href="/auth/register">
+                  Get Started Free
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button 
                 size="lg" 
-                variant="outline" 
-                className="border-2 border-[#3A86FF] text-[#3A86FF] hover:bg-[#3A86FF] hover:text-white px-8 py-6 text-lg transition-all duration-300 hover:scale-105 bg-white"
+                variant="outline"
+                className="h-12 px-8 rounded-full bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
                 asChild
               >
-                <Link href="/auth/register">
-                  <Rocket className="mr-2 h-5 w-5" />
-                  Sign Up Free
-                </Link>
+                <Link href="/courses">Browse Courses</Link>
               </Button>
             </div>
-          </motion.div>
+          </AnimatedSection>
         </div>
       </section>
     </div>

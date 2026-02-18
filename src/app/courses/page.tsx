@@ -1,18 +1,17 @@
 "use client";
 
-import { useState, Suspense, useMemo } from "react";
+import { useState, Suspense, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Filter, Star, Clock, Users, Play, BookOpen, TrendingUp, Sparkles, ArrowRight, Grid, List } from "lucide-react";
+import { Search, Star, Clock, Users, Play, BookOpen, ArrowRight, Grid3X3, List, SlidersHorizontal, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useCourses } from "@/hooks/useCourses";
 import { formatCurrency, formatDuration } from "@/utils/helpers";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 
 const categories = [
   "All",
@@ -36,6 +35,30 @@ const sortOptions = [
   { value: "popular", label: "Most Popular" },
 ];
 
+const priceRanges = [
+  { value: "all", label: "All Prices" },
+  { value: "free", label: "Free" },
+  { value: "0-50", label: "Under $50" },
+  { value: "50-100", label: "$50 - $100" },
+  { value: "100+", label: "$100+" },
+];
+
+function AnimatedCard({ children, index }: { children: React.ReactNode; index: number }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.5, delay: index * 0.05 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 function CoursesPageContent() {
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams.get("search") || "");
@@ -43,12 +66,12 @@ function CoursesPageContent() {
   const [sortBy, setSortBy] = useState("newest");
   const [priceFilter, setPriceFilter] = useState("all");
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [showFilters, setShowFilters] = useState(false);
 
   const filters = useMemo(() => ({
     search: search || undefined,
     category: category !== "All" ? category : undefined,
     sortBy,
-    // Convert priceFilter to minPrice/maxPrice
     ...(priceFilter === "0-50" && { minPrice: 0, maxPrice: 50 }),
     ...(priceFilter === "50-100" && { minPrice: 50, maxPrice: 100 }),
     ...(priceFilter === "100+" && { minPrice: 100 }),
@@ -58,122 +81,110 @@ function CoursesPageContent() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // This would trigger a refetch with the new search params
   };
 
-  const clearAllFilters = () => {
+  const clearFilters = () => {
     setSearch("");
     setCategory("All");
     setPriceFilter("all");
     setSortBy("newest");
   };
 
+  const hasActiveFilters = search || category !== "All" || priceFilter !== "all" || sortBy !== "newest";
+
   return (
-    <div className="min-h-screen bg-[#F1F5F9] pt-20">
-      {/* Modern Hero Section */}
-      <section className="bg-[#1E293B] text-white py-20 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 opacity-10">
-          <motion.div
-            className="absolute top-10 left-10 w-20 h-20 bg-[#3A86FF] rounded-full"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-            transition={{ duration: 4, repeat: Infinity }}
-          />
-          <motion.div
-            className="absolute bottom-10 right-10 w-16 h-16 bg-[#FFBE0B] rounded-full"
-            animate={{ scale: [1.2, 1, 1.2], opacity: [0.8, 0.5, 0.8] }}
-            transition={{ duration: 4, repeat: Infinity }}
-          />
-          <motion.div
-            className="absolute top-1/2 right-1/4 w-12 h-12 bg-[#8338EC] rounded-full"
-            animate={{ y: [-10, 10, -10] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="min-h-screen bg-background pt-20">
+      {/* Hero Section */}
+      <section className="relative py-16 lg:py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-subtle" />
+        <div className="absolute inset-0 bg-mesh opacity-40" />
+        
+        <div className="section-container relative z-10">
           <motion.div 
-            className="text-center"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl mx-auto text-center"
           >
-            <motion.div
-              className="inline-flex items-center px-4 py-2 bg-[#3A86FF]/20 backdrop-blur-sm rounded-full border border-[#3A86FF]/30 mb-6"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Sparkles className="w-4 h-4 text-[#FFBE0B] mr-2" />
-              <span className="text-sm font-medium text-white/90">Discover Your Next Adventure</span>
-            </motion.div>
-
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Explore{" "}
-              <span className="text-[#3A86FF] relative">
-                Courses
-                <motion.div
-                  className="absolute -bottom-2 left-0 right-0 h-1 bg-[#FFBE0B] rounded-full"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 0.8, delay: 0.8 }}
-                />
-              </span>
+            <Badge variant="secondary" className="mb-4 rounded-full">
+              1000+ Courses Available
+            </Badge>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight mb-4">
+              Explore Courses
             </h1>
-            <p className="text-xl text-[#94A3B8] max-w-3xl mx-auto leading-relaxed">
-              Transform your skills with expert-led courses designed for real-world success
+            <p className="text-lg text-muted-foreground mb-8">
+              Discover world-class courses taught by industry experts
             </p>
+
+            {/* Search Bar */}
+            <form onSubmit={handleSearch} className="max-w-xl mx-auto">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search for courses, topics, or instructors..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="h-14 pl-12 pr-4 text-base rounded-2xl bg-card border-border/50 shadow-apple focus:shadow-apple-md transition-shadow"
+                />
+              </div>
+            </form>
           </motion.div>
         </div>
       </section>
 
-      {/* Modern Search and Filters */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <motion.div 
-          className="bg-white rounded-2xl shadow-lg border border-[#E2E8F0] p-8 mb-8"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <form onSubmit={handleSearch} className="mb-6">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#64748B] h-5 w-5" />
-              <Input
-                type="text"
-                placeholder="Search for courses, topics, or instructors..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-12 py-6 text-lg border-2 border-[#E2E8F0] focus:border-[#3A86FF] transition-colors"
-              />
-            </div>
-          </form>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-[#1E293B] mb-2">
-                Category
-              </label>
+      {/* Filters Bar */}
+      <section className="sticky top-16 z-40 bg-background/80 backdrop-blur-xl border-b border-border/50 py-4">
+        <div className="section-container">
+          <div className="flex items-center justify-between gap-4">
+            {/* Left: Category Pills (Desktop) */}
+            <div className="hidden lg:flex items-center gap-2 overflow-x-auto scrollbar-hide">
+              {categories.slice(0, 6).map((cat) => (
+                <Button
+                  key={cat}
+                  variant={category === cat ? "default" : "secondary"}
+                  size="sm"
+                  className={`rounded-full whitespace-nowrap ${
+                    category === cat ? "" : "bg-muted/50 hover:bg-muted"
+                  }`}
+                  onClick={() => setCategory(cat)}
+                >
+                  {cat}
+                </Button>
+              ))}
               <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="border-2 border-[#E2E8F0] focus:border-[#3A86FF]">
-                  <SelectValue />
+                <SelectTrigger className="w-24 h-8 rounded-full bg-muted/50 border-0 text-sm">
+                  <span>More</span>
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
-                    </SelectItem>
+                  {categories.slice(6).map((cat) => (
+                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-[#1E293B] mb-2">
-                Sort By
-              </label>
+            {/* Mobile: Filter Toggle */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="lg:hidden rounded-full"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <SlidersHorizontal className="h-4 w-4 mr-2" />
+              Filters
+              {hasActiveFilters && (
+                <span className="ml-2 w-5 h-5 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center">
+                  !
+                </span>
+              )}
+            </Button>
+
+            {/* Right: Sort & View */}
+            <div className="flex items-center gap-3">
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="border-2 border-[#E2E8F0] focus:border-[#3A86FF]">
-                  <SelectValue />
+                <SelectTrigger className="w-40 h-9 rounded-full bg-muted/50 border-0">
+                  <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
                   {sortOptions.map((option) => (
@@ -183,255 +194,258 @@ function CoursesPageContent() {
                   ))}
                 </SelectContent>
               </Select>
-            </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-[#1E293B] mb-2">
-                Price Range
-              </label>
               <Select value={priceFilter} onValueChange={setPriceFilter}>
-                <SelectTrigger className="border-2 border-[#E2E8F0] focus:border-[#3A86FF]">
-                  <SelectValue />
+                <SelectTrigger className="w-32 h-9 rounded-full bg-muted/50 border-0 hidden sm:flex">
+                  <SelectValue placeholder="Price" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Prices</SelectItem>
-                  <SelectItem value="free">Free</SelectItem>
-                  <SelectItem value="0-50">$0 - $50</SelectItem>
-                  <SelectItem value="50-100">$50 - $100</SelectItem>
-                  <SelectItem value="100+">$100+</SelectItem>
+                  {priceRanges.map((range) => (
+                    <SelectItem key={range.value} value={range.value}>
+                      {range.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-            </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-[#1E293B] mb-2">
-                View Mode
-              </label>
-              <div className="flex border-2 border-[#E2E8F0] rounded-lg overflow-hidden">
-                <button
-                  type="button"
+              <div className="hidden sm:flex items-center border border-border/50 rounded-full p-0.5">
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                  size="icon"
+                  className="h-7 w-7 rounded-full"
                   onClick={() => setViewMode('grid')}
-                  className={`flex-1 p-2 transition-colors ${
-                    viewMode === 'grid' 
-                      ? 'bg-[#3A86FF] text-white' 
-                      : 'bg-white text-[#64748B] hover:bg-[#F1F5F9]'
-                  }`}
                 >
-                  <Grid className="h-4 w-4 mx-auto" />
-                </button>
-                <button
-                  type="button"
+                  <Grid3X3 className="h-3.5 w-3.5" />
+                </Button>
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'ghost'}
+                  size="icon"
+                  className="h-7 w-7 rounded-full"
                   onClick={() => setViewMode('list')}
-                  className={`flex-1 p-2 transition-colors ${
-                    viewMode === 'list' 
-                      ? 'bg-[#3A86FF] text-white' 
-                      : 'bg-white text-[#64748B] hover:bg-[#F1F5F9]'
-                  }`}
                 >
-                  <List className="h-4 w-4 mx-auto" />
-                </button>
+                  <List className="h-3.5 w-3.5" />
+                </Button>
               </div>
-            </div>
 
-            <div className="flex items-end">
-              <Button 
-                variant="outline" 
-                className="w-full border-2 border-[#E2E8F0] hover:border-[#3A86FF] hover:text-[#3A86FF] transition-colors"
-                onClick={clearAllFilters}
-              >
-                <Filter className="mr-2 h-4 w-4" />
-                Clear All
-              </Button>
+              {hasActiveFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full text-muted-foreground"
+                  onClick={clearFilters}
+                >
+                  <X className="h-4 w-4 mr-1" />
+                  Clear
+                </Button>
+              )}
             </div>
           </div>
-        </motion.div>
 
-        {/* Results */}
+          {/* Mobile Filters */}
+          <AnimatePresence>
+            {showFilters && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="lg:hidden overflow-hidden"
+              >
+                <div className="pt-4 space-y-4">
+                  <div className="flex flex-wrap gap-2">
+                    {categories.map((cat) => (
+                      <Button
+                        key={cat}
+                        variant={category === cat ? "default" : "secondary"}
+                        size="sm"
+                        className="rounded-full"
+                        onClick={() => setCategory(cat)}
+                      >
+                        {cat}
+                      </Button>
+                    ))}
+                  </div>
+                  <div className="flex gap-3">
+                    <Select value={priceFilter} onValueChange={setPriceFilter}>
+                      <SelectTrigger className="flex-1 rounded-xl">
+                        <SelectValue placeholder="Price Range" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {priceRanges.map((range) => (
+                          <SelectItem key={range.value} value={range.value}>
+                            {range.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
+
+      {/* Results */}
+      <section className="section-container py-8 lg:py-12">
         <AnimatePresence mode="wait">
           {isLoading ? (
             <motion.div 
-              className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}
             >
               {[...Array(6)].map((_, i) => (
-                <Card key={i} className="animate-pulse border-0 shadow-lg">
-                  <div className="h-48 bg-[#E2E8F0] rounded-t-lg"></div>
-                  <CardContent className="p-6">
-                    <div className="h-4 bg-[#E2E8F0] rounded w-3/4 mb-2"></div>
-                    <div className="h-4 bg-[#E2E8F0] rounded w-1/2 mb-4"></div>
-                    <div className="flex justify-between">
-                      <div className="h-4 bg-[#E2E8F0] rounded w-1/4"></div>
-                      <div className="h-4 bg-[#E2E8F0] rounded w-1/4"></div>
+                <div key={i} className="bg-card rounded-2xl overflow-hidden border border-border/50">
+                  <div className="aspect-[16/10] bg-muted animate-shimmer" />
+                  <div className="p-6 space-y-4">
+                    <div className="h-5 bg-muted rounded-lg w-3/4 animate-shimmer" />
+                    <div className="h-4 bg-muted rounded-lg w-1/2 animate-shimmer" />
+                    <div className="flex gap-4">
+                      <div className="h-4 bg-muted rounded-lg w-1/4 animate-shimmer" />
+                      <div className="h-4 bg-muted rounded-lg w-1/4 animate-shimmer" />
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </motion.div>
           ) : error ? (
             <motion.div 
-              className="text-center py-12 bg-white rounded-2xl shadow-lg"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
+              className="text-center py-20"
             >
-              <BookOpen className="h-16 w-16 text-[#E2E8F0] mx-auto mb-4" />
-              <p className="text-[#64748B] text-lg">
-                Failed to load courses. Please try again later.
+              <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-medium mb-2">Failed to load courses</h3>
+              <p className="text-muted-foreground mb-6">
+                Something went wrong. Please try again later.
               </p>
-              <Button 
-                className="mt-4 bg-[#3A86FF] hover:bg-[#2563EB] text-white"
-                onClick={() => window.location.reload()}
-              >
+              <Button onClick={() => window.location.reload()}>
                 Try Again
               </Button>
             </motion.div>
           ) : courses && courses.length > 0 ? (
             <>
-              <motion.div 
-                className="flex justify-between items-center mb-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <p className="text-[#64748B] font-medium">
-                  <span className="text-[#1E293B] font-bold">{courses.length}</span> courses found
+              <div className="flex items-center justify-between mb-6">
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">{courses.length}</span> courses found
                 </p>
-                <div className="flex items-center gap-2 text-sm text-[#64748B]">
-                  <TrendingUp className="h-4 w-4" />
-                  <span>Updated daily</span>
-                </div>
-              </motion.div>
+              </div>
 
-              <motion.div 
-                className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
+              <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
                 {courses.map((course, index) => (
-                  <motion.div
-                    key={course.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                  >
-                    <Card className={`group hover:shadow-xl transition-all duration-300 hover:scale-105 border-0 shadow-lg bg-white ${viewMode === 'list' ? 'flex' : ''}`}>
-                      <div className={`relative ${viewMode === 'list' ? 'w-64 flex-shrink-0' : ''}`}>
-                        <Image
-                          src={course.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&h=200&fit=crop"}
-                          alt={course.title}
-                          width={300}
-                          height={192}
-                          className={`object-cover ${viewMode === 'list' ? 'w-full h-48' : 'w-full h-48'} rounded-t-lg ${viewMode === 'list' ? 'rounded-l-lg rounded-t-none' : ''}`}
-                        />
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center rounded-t-lg">
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            whileHover={{ scale: 1 }}
-                            transition={{ type: "spring", stiffness: 300 }}
-                          >
-                            <Play className="h-12 w-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </motion.div>
+                  <AnimatedCard key={course.id} index={index}>
+                    <Link href={`/courses/${course.id}`}>
+                      <motion.div
+                        whileHover={{ y: -4 }}
+                        transition={{ duration: 0.2 }}
+                        className={`group bg-card rounded-2xl overflow-hidden border border-border/50 shadow-apple hover:shadow-apple-lg transition-all duration-300 ${
+                          viewMode === 'list' ? 'flex' : ''
+                        }`}
+                      >
+                        <div className={`relative ${viewMode === 'list' ? 'w-64 shrink-0' : ''}`}>
+                          <div className={`${viewMode === 'list' ? 'aspect-square' : 'aspect-[16/10]'} overflow-hidden`}>
+                            <Image
+                              src={course.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop"}
+                              alt={course.title}
+                              width={600}
+                              height={400}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          </div>
+                          <div className="absolute top-3 left-3 flex gap-2">
+                            <Badge className="bg-background/90 backdrop-blur-sm text-foreground border-0 text-xs">
+                              {course.category?.name}
+                            </Badge>
+                            {Number(course.price) === 0 && (
+                              <Badge className="bg-emerald-500 text-white border-0 text-xs">
+                                Free
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
+                              <Play className="h-5 w-5 text-foreground ml-0.5" />
+                            </div>
+                          </div>
                         </div>
-                        <Badge className="absolute top-4 left-4 bg-[#3A86FF] text-white border-0">
-                          {course.category?.name}
-                        </Badge>
-                        {Number(course.price) === 0 && (
-                          <Badge className="absolute top-4 right-4 bg-[#FFBE0B] text-[#1E293B] border-0">
-                            Free
-                          </Badge>
-                        )}
-                      </div>
 
-                      <div className={`${viewMode === 'list' ? 'flex-1' : ''}`}>
-                        <CardHeader className="pb-4">
-                          <CardTitle className="text-lg line-clamp-2 group-hover:text-[#3A86FF] transition-colors font-bold text-[#1E293B]">
+                        <div className="p-5 flex-1">
+                          <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                             {course.title}
-                          </CardTitle>
-                          <p className="text-sm text-[#64748B] font-medium">
+                          </h3>
+                          <p className="text-sm text-muted-foreground mb-3">
                             by {course.instructor?.firstName} {course.instructor?.lastName}
                           </p>
-                        </CardHeader>
 
-                        <CardContent className="space-y-4">
-                          <p className="text-sm text-[#64748B] line-clamp-2 leading-relaxed">
-                            {course.description}
-                          </p>
-
-                          <div className="flex items-center gap-4 text-sm text-[#64748B]">
-                            <div className="flex items-center">
-                              <Star className="h-4 w-4 fill-[#FFBE0B] text-[#FFBE0B] mr-1" />
-                              <span className="font-medium text-[#1E293B]">
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                            <div className="flex items-center gap-1">
+                              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                              <span className="font-medium text-foreground">
                                 {course.averageRating?.toFixed(1) || "0.0"}
                               </span>
                             </div>
-                            <div className="flex items-center">
-                              <Users className="h-4 w-4 mr-1" />
-                              <span>{course._count?.enrollments || 0} students</span>
+                            <div className="flex items-center gap-1">
+                              <Users className="w-4 h-4" />
+                              <span>{course._count?.enrollments || 0}</span>
                             </div>
-                            <div className="flex items-center">
-                              <Clock className="h-4 w-4 mr-1" />
+                            <div className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
                               <span>{formatDuration(course.duration || 0)}</span>
                             </div>
                           </div>
 
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-baseline gap-2">
                               {Number(course.price) === 0 ? (
-                                <span className="text-2xl font-bold text-[#3A86FF]">Free</span>
+                                <span className="text-xl font-semibold text-primary">Free</span>
                               ) : (
                                 <>
-                                  <span className="text-2xl font-bold text-[#1E293B]">
+                                  <span className="text-xl font-semibold">
                                     {formatCurrency(Number(course.discountPrice || course.price))}
                                   </span>
                                   {course.discountPrice && Number(course.discountPrice) < Number(course.price) && (
-                                    <span className="text-sm text-[#64748B] line-through">
+                                    <span className="text-sm text-muted-foreground line-through">
                                       {formatCurrency(Number(course.price))}
                                     </span>
                                   )}
                                 </>
                               )}
                             </div>
+                            <Button size="sm" className="rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                              View
+                              <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                            </Button>
                           </div>
-
-                          <Button 
-                            className="w-full bg-[#3A86FF] hover:bg-[#2563EB] text-white shadow-lg hover:shadow-xl transition-all duration-300 group"
-                            asChild
-                          >
-                            <Link href={`/courses/${course.id}`}>
-                              View Course
-                              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                          </Button>
-                        </CardContent>
-                      </div>
-                    </Card>
-                  </motion.div>
+                        </div>
+                      </motion.div>
+                    </Link>
+                  </AnimatedCard>
                 ))}
-              </motion.div>
+              </div>
             </>
           ) : (
             <motion.div 
-              className="text-center py-12 bg-white rounded-2xl shadow-lg"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
+              className="text-center py-20"
             >
-              <BookOpen className="h-16 w-16 text-[#E2E8F0] mx-auto mb-4" />
-              <p className="text-[#64748B] mb-4 text-lg">
-                No courses found matching your criteria.
+              <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
+                <Search className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-medium mb-2">No courses found</h3>
+              <p className="text-muted-foreground mb-6">
+                Try adjusting your filters or search terms
               </p>
-              <Button 
-                variant="outline" 
-                className="border-2 border-[#3A86FF] text-[#3A86FF] hover:bg-[#3A86FF] hover:text-white transition-colors"
-                onClick={clearAllFilters}
-              >
+              <Button variant="outline" onClick={clearFilters}>
                 Clear All Filters
               </Button>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </section>
     </div>
   );
 }
@@ -439,14 +453,10 @@ function CoursesPageContent() {
 export default function CoursesPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-[#F1F5F9]">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 border-4 border-[#3A86FF] border-t-transparent rounded-full mx-auto mb-4"
-          />
-          <p className="text-[#64748B] font-medium">Loading courses...</p>
+          <div className="w-12 h-12 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading courses...</p>
         </div>
       </div>
     }>
